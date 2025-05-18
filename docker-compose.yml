@@ -2,7 +2,7 @@ version: "3.8"
 services:
   db:
     image: postgres:16
-    container_name: bcb-db
+    container_name: healthsync-db
     restart: always
     env_file:
       - .env
@@ -21,8 +21,8 @@ services:
       retries: 5
 
   app:
-    image: bcb-app
-    container_name: bcb-app
+    image: healthsync-api
+    container_name: healthsync-api
     restart: always
     build: .
     depends_on:
