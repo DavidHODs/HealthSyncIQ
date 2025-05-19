@@ -5,13 +5,16 @@ from sqlalchemy.orm import Session
 from v1.errors import AppException
 from v1.models import StaffModel
 from v1.schemas import LoginRequestSchema, LoginResponseSchema, StaffSchema
-from .general.jwt import jwt_service
 from v1.type_defs import APIResponse, ErrorTypeEnum
+
+from .general.jwt import jwt_service
+from .general.redis import redis_service
 
 
 class AuthService:
   def __init__(self) -> None:
-    None
+    self.jwt_service = jwt_service()
+    self.redis_service = redis_service()
 
   def login(self, login_data: LoginRequestSchema,
             db: Session) -> APIResponse[LoginResponseSchema]:
@@ -33,13 +36,14 @@ class AuthService:
             type=ErrorTypeEnum.UNAUTHORIZED,
             detail="Invalid email or password"
         )
-      
-      token = jwt_service().create_token(
+
+      token = self.jwt_service.create_token(
           id=staff.id,
-          title=staff.title,
-          surname=staff.surname,
           role=staff.role
       )
+
+      redis_auth_key = f"auth:{staff.id}"
+      self.redis_service.set(redis_auth_key, token)
 
       login_response = LoginResponseSchema(
           auth_token=token,

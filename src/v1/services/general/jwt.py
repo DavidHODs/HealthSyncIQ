@@ -11,6 +11,7 @@ from v1.type_defs import ErrorTypeEnum, JWTTokenPayload
 
 _jwt_service_instance: Optional["JWTService"] = None
 
+
 class JWTService:
   def __init__(self) -> None:
     self.secret_key = Config.JWT_SECRET_KEY
@@ -18,14 +19,10 @@ class JWTService:
     self.expiry_days = Config.JWT_TOKEN_AND_REDIS_EXPIRY_DAYS
     self.seconds_in_a_day = Config.SECONDS_IN_A_DAY
 
-  def create_token(
-      self, id: UUID, title: str, surname: str, role: str
-  ) -> str:
+  def create_token(self, id: UUID, role: str) -> str:
     try:
       payload = JWTTokenPayload(
           id=str(id),
-          title=title,
-          surname=surname,
           role=role,
           exp=datetime.datetime.now(
               datetime.timezone.utc) + datetime.timedelta(seconds=self.expiry_days * self.seconds_in_a_day)
@@ -70,8 +67,8 @@ class JWTService:
 
 def jwt_service() -> JWTService:
   global _jwt_service_instance
-  
+
   if _jwt_service_instance is None:
     _jwt_service_instance = JWTService()
-    
+
   return _jwt_service_instance

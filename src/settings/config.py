@@ -20,12 +20,13 @@ class Config:
 
   JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "")
   JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", "HS256")
-  
+
   REDIS_HOST: str = os.getenv("REDIS_HOST", "localhost")
   REDIS_PORT: int = int(os.getenv("REDIS_PORT", 9439))
   REDIS_DB: int = int(os.getenv("REDIS_DB", 2))
   REDIS_USERNAME = os.getenv("REDIS_USERNAME", "")
   REDIS_PASSWORD: str = os.getenv("REDIS_PASSWORD", "")
-  
-  JWT_TOKEN_AND_REDIS_EXPIRY_DAYS: int = int(os.getenv("JWT_TOKEN_AND_REDIS_EXPIRY_DAYS", 7))
+
+  JWT_TOKEN_AND_REDIS_EXPIRY_DAYS: int = int(
+      os.getenv("JWT_TOKEN_AND_REDIS_EXPIRY_DAYS", 7))
   SECONDS_IN_A_DAY: int = 86400

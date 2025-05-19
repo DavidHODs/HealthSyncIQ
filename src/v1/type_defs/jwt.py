@@ -1,10 +1,9 @@
 from datetime import datetime
-from typing import TypedDict
+
+from typing_extensions import NotRequired, TypedDict
 
 
 class JWTTokenPayload(TypedDict):
   id: str
-  title: str
-  surname: str
   role: str
-  exp: datetime
+  exp: NotRequired[datetime]

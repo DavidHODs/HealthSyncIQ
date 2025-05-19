@@ -1,5 +1,4 @@
 from contextlib import asynccontextmanager
-import asyncio
 
 import uvicorn
 from dotenv import load_dotenv
@@ -12,8 +11,8 @@ from typing_extensions import AsyncGenerator
 from database import get_db
 from settings import INIT_START_TIME, Config
 from v1.routes import all_routes
+from v1.services.general.redis import RedisService, redis_service
 from v1.type_defs import UvicornKwargs
-from v1.services.general.redis import redis_service, RedisService
 
 load_dotenv(dotenv_path=".env")
 INIT_START_TIME
@@ -34,7 +33,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     exit(1)
   finally:
     if 'db' in locals() and db:
-        db.close()
+      db.close()
 
   redis_service_instance.connect_client()
 
