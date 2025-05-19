@@ -3,7 +3,7 @@ from .clinical_encounter import ClinicalEncounterSchema
 from .clinical_note import ClinicalNoteSchema
 from .clinical_order import ClinicalOrderSchema
 from .clinical_order_result import ClinicalOrderResultSchema
-from .department import DepartmentSchema
+from .department import DepartmentCreateRequestSchema, DepartmentUpdateRequestSchema, DepartmentResponseSchema
 from .department_membership import DepartmentMembershipSchema
 from .diagnosis import DiagnosisSchema
 from .file_attachment import FileAttachmentSchema
@@ -14,7 +14,9 @@ from .staff import StaffSchema
 
 __all__ = [
     "StaffSchema",
-    "DepartmentSchema",
+    "DepartmentCreateRequestSchema",
+    "DepartmentUpdateRequestSchema",
+    "DepartmentResponseSchema",
     "DepartmentMembershipSchema",
     "PatientSchema",
     "ClinicalEncounterSchema",

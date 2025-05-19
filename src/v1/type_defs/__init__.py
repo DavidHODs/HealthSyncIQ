@@ -3,7 +3,8 @@ from .kwargs import UvicornKwargs
 from .response import (
   APIResponse,
   BaseResponse,
-  CreateData,
+  CreateDataResponse,
+  UpdateDataResponse,
   ErrorResponse,
   HealthCheckData,
 )
@@ -18,6 +19,7 @@ __all__ = [
     "ERROR_TYPE_DEFAULTS",
     "ERROR_STATUS_CODES",
     "BaseResponse",
-    "CreateData",
+    "CreateDataResponse",
+    "UpdateDataResponse",
     "JWTTokenPayload"
 ]
