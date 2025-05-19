@@ -3,17 +3,20 @@ from typing import Any, Dict, cast
 from uuid import UUID
 
 import jwt
+from typing_extensions import Optional
 
 from settings import Config
 from v1.errors import AppException
 from v1.type_defs import ErrorTypeEnum, JWTTokenPayload
 
+_jwt_service_instance: Optional["JWTService"] = None
 
 class JWTService:
   def __init__(self) -> None:
     self.secret_key = Config.JWT_SECRET_KEY
     self.algorithm = Config.JWT_ALGORITHM
-    self.expiry_minutes = Config.JWT_EXPIRY_MINUTES
+    self.expiry_days = Config.JWT_TOKEN_AND_REDIS_EXPIRY_DAYS
+    self.seconds_in_a_day = Config.SECONDS_IN_A_DAY
 
   def create_token(
       self, id: UUID, title: str, surname: str, role: str
@@ -25,7 +28,7 @@ class JWTService:
           surname=surname,
           role=role,
           exp=datetime.datetime.now(
-              datetime.timezone.utc) + datetime.timedelta(minutes=self.expiry_minutes)
+              datetime.timezone.utc) + datetime.timedelta(seconds=self.expiry_days * self.seconds_in_a_day)
       )
 
       encoded_jwt = jwt.encode(
@@ -66,4 +69,9 @@ class JWTService:
 
 
 def jwt_service() -> JWTService:
-  return JWTService()
+  global _jwt_service_instance
+  
+  if _jwt_service_instance is None:
+    _jwt_service_instance = JWTService()
+    
+  return _jwt_service_instance

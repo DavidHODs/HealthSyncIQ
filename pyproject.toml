@@ -24,6 +24,7 @@ ruff = "^0.11.0"
 psycopg2 = "^2.9.10"
 bcrypt = "^4.3.0"
 pyjwt = "^2.10.1"
+redis = "^6.1.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = ">=3.7.0,<4.0.0"

@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from v1.errors import AppException
 from v1.models import StaffModel
 from v1.schemas import LoginRequestSchema, LoginResponseSchema, StaffSchema
-from v1.services import jwt_service
+from .general.jwt import jwt_service
 from v1.type_defs import APIResponse, ErrorTypeEnum
 
 
@@ -33,7 +33,7 @@ class AuthService:
             type=ErrorTypeEnum.UNAUTHORIZED,
             detail="Invalid email or password"
         )
-
+      
       token = jwt_service().create_token(
           id=staff.id,
           title=staff.title,

@@ -20,7 +20,7 @@ class AppService:
   def health_check(self) -> APIResponse[HealthCheckData]:
     try:
       uptime_str = self._get_uptime()
-
+      
       return {
           "data": {
               "status": "OK",
