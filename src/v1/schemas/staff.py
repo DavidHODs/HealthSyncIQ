@@ -11,7 +11,7 @@ class DepartmentRequestSchema(BaseModel):
 class StaffDepartmentResponseSchema(BaseModel):
   id: uuid.UUID
   name: str
-  description: str
+  description: Optional[str] = None
 
 
 class StaffCreateRequestSchema(BaseModel):
@@ -25,7 +25,7 @@ class StaffCreateRequestSchema(BaseModel):
 
   class Config:
     extra = "forbid"
-    schema_extra = {
+    json_schema_extra = {
         "example": {
             "email": "jane.doe@example.com",
             "title": "Dr.",
@@ -53,7 +53,7 @@ class StaffUpdateRequestSchema(BaseModel):
 
   class Config:
     extra = "forbid"
-    schema_extra = {
+    json_schema_extra = {
         "example": {
             "email": "jane.doe@example.com",
             "title": "Dr.",
@@ -82,7 +82,7 @@ class StaffResponseSchema(BaseModel):
 
   class Config:
     extra = "forbid"
-    schema_extra = {
+    json_schema_extra = {
         "example": {
             "id": "123e4567-e89b-12d3-a456-426614174001",
             "email": "jane.doe@example.com",

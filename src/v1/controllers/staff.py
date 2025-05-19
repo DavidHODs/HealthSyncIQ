@@ -8,11 +8,11 @@ from database import get_db
 from v1.errors import AppException, ExceptionHandler
 from v1.middlewares import Authenticate
 from v1.schemas import (
-  DepartmentCreateRequestSchema,
-  DepartmentResponseSchema,
-  DepartmentUpdateRequestSchema,
+  StaffCreateRequestSchema,
+  StaffResponseSchema,
+  StaffUpdateRequestSchema,
 )
-from v1.services import DepartmentService
+from v1.services import StaffService
 from v1.type_defs import (
   APIResponse,
   CreateDataResponse,
@@ -22,30 +22,30 @@ from v1.type_defs import (
 )
 
 
-class DepartmentController:
+class StaffController:
   def __init__(self) -> None:
-    self.department_service: DepartmentService = DepartmentService()
+    self.staff_service: StaffService = StaffService()
 
   def create(
       self,
-      data: DepartmentCreateRequestSchema,
+      data: StaffCreateRequestSchema,
       db: Session = Depends(get_db),
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
   ) -> APIResponse[CreateDataResponse] | Response:
     try:
-      return self.department_service.create(data, db)
+      return self.staff_service.create(data, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
 
   def update(
       self,
       id: UUID,
-      data: DepartmentUpdateRequestSchema,
+      data: StaffUpdateRequestSchema,
       db: Session = Depends(get_db),
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
   ) -> APIResponse[UpdateDataResponse] | Response:
     try:
-      return self.department_service.update(id, data, db)
+      return self.staff_service.update(id, data, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
 
@@ -53,9 +53,9 @@ class DepartmentController:
       self,
       db: Session = Depends(get_db),
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
-  ) -> APIResponse[List[DepartmentResponseSchema]] | Response:
+  ) -> APIResponse[List[StaffResponseSchema]] | Response:
     try:
-      return self.department_service.getAll(db)
+      return self.staff_service.getAll(db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
 
@@ -64,9 +64,9 @@ class DepartmentController:
       id: UUID,
       db: Session = Depends(get_db),
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
-  ) -> APIResponse[DepartmentResponseSchema] | Response:
+  ) -> APIResponse[StaffResponseSchema] | Response:
     try:
-      return self.department_service.getOne(id, db)
+      return self.staff_service.getOne(id, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
 
@@ -77,7 +77,7 @@ class DepartmentController:
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
   ) -> APIResponse[str] | Response:
     try:
-      return self.department_service.delete(id, db)
+      return self.staff_service.delete(id, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
 
@@ -88,6 +88,6 @@ class DepartmentController:
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
   ) -> APIResponse[str] | Response:
     try:
-      return self.department_service.restore(id, db)
+      return self.staff_service.restore(id, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)

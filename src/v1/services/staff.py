@@ -43,6 +43,7 @@ class StaffService:
 
       staff = StaffModel(**staff_data)
       db.add(staff)
+      db.flush()
 
       membership_objects: List[DepartmentMembershipModel] = []
       for dept_data in departments_data:
@@ -61,7 +62,7 @@ class StaffService:
       return {
           "data": {
               "id": staff.id,
-              "message": f"Staff {staff.first_name} {staff.surname} created successfully"
+              "message": f"Staff {staff.title} {staff.surname} {staff.first_name} created successfully"
           }
       }
 

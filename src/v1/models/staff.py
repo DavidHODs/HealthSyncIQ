@@ -5,11 +5,10 @@ from sqlalchemy import Boolean, String, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.sqltypes import TIMESTAMP
-from typing_extensions import Optional, List
-
-from .department import DepartmentModel
+from typing_extensions import List, Optional
 
 from .base import Base
+from .department import DepartmentModel
 
 
 class StaffModel(Base):

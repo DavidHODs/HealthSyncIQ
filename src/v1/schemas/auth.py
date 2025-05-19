@@ -9,7 +9,7 @@ class LoginRequestSchema(BaseModel):
 
   class Config:
     extra = "forbid"
-    json_schema_extra = {
+    json_json_schema_extra = {
         "email": "user@example.com",
         "password": "SecurePassword123!"
     }
@@ -23,7 +23,7 @@ class LoginStaffResponseSchema(BaseModel):
   role: str
 
   class Config:
-    json_schema_extra = {
+    json_json_schema_extra = {
         "id": "123e4567-e89b-12d3-a456-426614174000",
         "email": "user@example.com",
         "title": "Dr.",
@@ -37,7 +37,7 @@ class LoginResponseSchema(BaseModel):
   staff: LoginStaffResponseSchema
 
   class Config:
-    json_schema_extra = {
+    json_json_schema_extra = {
         "auth_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
         "staff": {
             "id": "123e4567-e89b-12d3-a456-426614174000",
