@@ -2,6 +2,7 @@
 import datetime
 from uuid import UUID
 
+from sqlalchemy import asc
 from sqlalchemy.orm import Session
 from typing_extensions import List
 
@@ -38,7 +39,7 @@ class DepartmentService:
               "message": f"Department {department.name} created successfully"
           }
       }
-    
+
     except Exception as exc:
       raise AppException.classify_error(exc)
 
@@ -77,7 +78,6 @@ class DepartmentService:
 
   def getAll(self, db: Session) -> APIResponse[List[DepartmentResponseSchema]]:
     try:
-      from sqlalchemy import asc
       departments = db.query(DepartmentModel).filter(
           DepartmentModel.deleted_at.is_(None)
       ).order_by(asc(DepartmentModel.name)).all()

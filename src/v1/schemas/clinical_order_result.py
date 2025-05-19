@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from typing_extensions import Any, Dict, List, Optional
 
 from .clinical_order import ClinicalOrderSchema
-from .staff import StaffSchema
+from .staff import StaffResponseSchema
 
 
 class ClinicalOrderResultSchema(BaseModel):
@@ -15,8 +15,8 @@ class ClinicalOrderResultSchema(BaseModel):
   result_data: Dict[str, Any]
   result_notes: Optional[str] = None
   file_attachments: Optional[List[Dict[str, Any]]] = None
-  performed_by: StaffSchema
-  verified_by: StaffSchema
+  performed_by: StaffResponseSchema
+  verified_by: StaffResponseSchema
   performed_at: Optional[datetime] = None
   verified_at: Optional[datetime] = None
   created_at: Optional[datetime] = None

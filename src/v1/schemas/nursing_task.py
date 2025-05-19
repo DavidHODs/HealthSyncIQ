@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from typing_extensions import Optional
 
 from .clinical_order import ClinicalOrderSchema
-from .staff import StaffSchema
+from .staff import StaffResponseSchema
 
 
 class NursingTaskSchema(BaseModel):
@@ -15,11 +15,11 @@ class NursingTaskSchema(BaseModel):
   instructions: str
   frequency: str
   status: str
-  assigned_to: StaffSchema
-  performed_by: StaffSchema
+  assigned_to: StaffResponseSchema
+  performed_by: StaffResponseSchema
   performed_at: datetime
   verification_required: bool
-  verified_by: StaffSchema
+  verified_by: StaffResponseSchema
   verified_at: Optional[datetime] = None
   result_notes: Optional[str] = None
   created_at: Optional[datetime] = None

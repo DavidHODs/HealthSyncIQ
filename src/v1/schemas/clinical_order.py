@@ -6,7 +6,7 @@ from typing_extensions import Any, Dict, Optional
 
 from .clinical_encounter import ClinicalEncounterSchema
 from .department import DepartmentResponseSchema
-from .staff import StaffSchema
+from .staff import StaffResponseSchema
 
 
 class ClinicalOrderSchema(BaseModel):
@@ -16,7 +16,7 @@ class ClinicalOrderSchema(BaseModel):
   order_details: Dict[str, Any]
   ordering_department: DepartmentResponseSchema
   target_department: DepartmentResponseSchema
-  ordered_by: StaffSchema
+  ordered_by: StaffResponseSchema
   priority: str
   status: str
   order_notes: str

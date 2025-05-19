@@ -1,17 +1,22 @@
 import datetime
 import uuid
 
-from sqlalchemy import Boolean, String, func
+from sqlalchemy import Boolean, String, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.sqltypes import TIMESTAMP
-from typing_extensions import Optional
+from typing_extensions import List, Optional
 
 from .base import Base
+from .department import DepartmentModel
 
 
 class StaffModel(Base):
   __tablename__ = "staffs"
+
+  __table_args__ = (
+      UniqueConstraint("email", name="uq_staffs_email"),
+  )
 
   id: Mapped[uuid.UUID] = mapped_column(
       UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -38,6 +43,11 @@ class StaffModel(Base):
   )
   deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(
       TIMESTAMP(timezone=True), nullable=True)
+  departments: Mapped[List["DepartmentModel"]] = relationship(
+      "DepartmentModel",
+      secondary="department_memberships",
+      lazy="selectin"
+  )
 
   def __repr__(self) -> str:
     return f"<StaffModel(id='{self.id}', surname='{self.surname}', first_name='{self.first_name}')>"

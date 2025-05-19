@@ -11,7 +11,7 @@ class DepartmentCreateRequestSchema(BaseModel):
 
   class Config:
     extra = "forbid"
-    json_schema_extra = {
+    json_json_schema_extra = {
         "name": "Pharmacy",
         "description": "Responsible for dispensing drugs"
     }
@@ -23,7 +23,7 @@ class DepartmentUpdateRequestSchema(BaseModel):
 
   class Config:
     extra = "forbid"
-    json_schema_extra = {
+    json_json_schema_extra = {
         "name": "Pharmacy",
         "description": "Responsible for dispensing drugs"
     }
@@ -37,7 +37,7 @@ class DepartmentResponseSchema(BaseModel):
   updated_at: Optional[datetime] = None
 
   class Config:
-    json_schema_extra = {
+    json_json_schema_extra = {
         "id": "123e4567-e89b-12d3-a456-426614174000",
         "name": "Pharmacy",
         "description": "Responsible for dispensing drugs",

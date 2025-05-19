@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from typing_extensions import Optional
 
 from .clinical_encounter import ClinicalEncounterSchema
-from .staff import StaffSchema
+from .staff import StaffResponseSchema
 
 
 class ClinicalNoteSchema(BaseModel):
@@ -13,7 +13,7 @@ class ClinicalNoteSchema(BaseModel):
   encounter: ClinicalEncounterSchema
   note_type: str
   note_content: str
-  staff: StaffSchema
+  staff: StaffResponseSchema
   created_at: Optional[datetime] = None
   updated_at: Optional[datetime] = None
   deleted_at: Optional[datetime] = None

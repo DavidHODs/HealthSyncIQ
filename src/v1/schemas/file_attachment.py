@@ -4,7 +4,7 @@ from datetime import datetime
 from pydantic import BaseModel
 from typing_extensions import Optional
 
-from .staff import StaffSchema
+from .staff import StaffResponseSchema
 
 
 class FileAttachmentSchema(BaseModel):
@@ -15,7 +15,7 @@ class FileAttachmentSchema(BaseModel):
   file_path: str
   file_type: str
   file_size: int
-  uploaded_by: StaffSchema
+  uploaded_by: StaffResponseSchema
   uploaded_at: datetime
   description: Optional[str] = None
   created_at: Optional[datetime] = None
