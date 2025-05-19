@@ -1,4 +1,8 @@
-from .auth import LoginRequestSchema, LoginResponseSchema
+from .auth import (
+  LoginRequestSchema,
+  LoginResponseSchema,
+  LoginStaffResponseSchema,
+)
 from .clinical_encounter import ClinicalEncounterSchema
 from .clinical_note import ClinicalNoteSchema
 from .clinical_order import ClinicalOrderSchema
@@ -14,10 +18,18 @@ from .file_attachment import FileAttachmentSchema
 from .medication_dispensing import MedicationDispensingSchema
 from .nursing_task import NursingTaskSchema
 from .patient import PatientSchema
-from .staff import StaffSchema
+from .staff import (
+  StaffCreateRequestSchema,
+  StaffDepartmentResponseSchema,
+  StaffResponseSchema,
+  StaffUpdateRequestSchema,
+)
 
 __all__ = [
-    "StaffSchema",
+    "StaffCreateRequestSchema",
+    "StaffResponseSchema",
+    "StaffUpdateRequestSchema",
+    "StaffDepartmentResponseSchema",
     "DepartmentCreateRequestSchema",
     "DepartmentUpdateRequestSchema",
     "DepartmentResponseSchema",
@@ -32,5 +44,6 @@ __all__ = [
     "MedicationDispensingSchema",
     "NursingTaskSchema",
     "LoginRequestSchema",
-    "LoginResponseSchema"
+    "LoginResponseSchema",
+    "LoginStaffResponseSchema"
 ]

@@ -4,7 +4,11 @@ from sqlalchemy.orm import Session
 
 from v1.errors import AppException
 from v1.models import StaffModel
-from v1.schemas import LoginRequestSchema, LoginResponseSchema, StaffSchema
+from v1.schemas import (
+  LoginRequestSchema,
+  LoginResponseSchema,
+  LoginStaffResponseSchema,
+)
 from v1.type_defs import APIResponse, ErrorTypeEnum
 
 from .general.jwt import jwt_service_instance
@@ -47,7 +51,7 @@ class AuthService:
 
       login_response = LoginResponseSchema(
           auth_token=token,
-          staff=StaffSchema(
+          staff=LoginStaffResponseSchema(
               id=staff.id,
               email=staff.email,
               title=staff.title,

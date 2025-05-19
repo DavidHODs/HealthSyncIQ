@@ -6,7 +6,7 @@ from typing_extensions import Optional
 
 from .department import DepartmentResponseSchema
 from .patient import PatientSchema
-from .staff import StaffSchema
+from .staff import StaffResponseSchema
 
 
 class ClinicalEncounterSchema(BaseModel):
@@ -16,7 +16,7 @@ class ClinicalEncounterSchema(BaseModel):
   presenting_complaint: Optional[str] = None
   start_date: datetime
   end_date: Optional[datetime] = None
-  attending_doctor: StaffSchema
+  attending_doctor: StaffResponseSchema
   department: DepartmentResponseSchema
   status: str
   created_at: Optional[datetime] = None
