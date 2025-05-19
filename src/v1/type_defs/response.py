@@ -34,6 +34,11 @@ class ErrorResponse(TypedDict):
   error: ErrorShape
 
 
-class CreateData(TypedDict):
+class CreateDataResponse(TypedDict):
+  id: UUID
+  message: str
+
+
+class UpdateDataResponse(TypedDict):
   id: UUID
   message: str

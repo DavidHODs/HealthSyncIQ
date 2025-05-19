@@ -1,16 +1,16 @@
 import uuid
-from typing import Optional
 
 from pydantic import BaseModel
+from typing_extensions import Optional
 
-from .department import DepartmentSchema
+from .department import DepartmentResponseSchema
 from .staff import StaffSchema
 
 
 class DepartmentMembershipSchema(BaseModel):
   id: Optional[uuid.UUID] = None
   staff_id: StaffSchema
-  department: DepartmentSchema
+  department: DepartmentResponseSchema
 
   class Config:
     from_attributes = True

@@ -8,6 +8,7 @@ class LoginRequestSchema(BaseModel):
   password: str
 
   class Config:
+    extra = "forbid"
     json_schema_extra = {
         "email": "user@example.com",
         "password": "SecurePassword123!"

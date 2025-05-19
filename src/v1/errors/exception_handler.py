@@ -18,7 +18,6 @@ class ExceptionHandler:
   @staticmethod
   def handle_error(exc: AppException) -> Response:
     status_code = ERROR_STATUS_CODES.get(exc.type, 500)
-
     if Config.isProd and exc.type in {
             ErrorTypeEnum.INTERNAL_SERVER_ERROR, ErrorTypeEnum.DATABASE_ERROR}:
       exc.detail = ERROR_TYPE_DEFAULTS.get(

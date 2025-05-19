@@ -1,11 +1,13 @@
+from .auth import StaffRole
 from .jwt import JWTTokenPayload
 from .kwargs import UvicornKwargs
 from .response import (
   APIResponse,
   BaseResponse,
-  CreateData,
+  CreateDataResponse,
   ErrorResponse,
   HealthCheckData,
+  UpdateDataResponse,
 )
 from .status_code import ERROR_STATUS_CODES, ERROR_TYPE_DEFAULTS, ErrorTypeEnum
 
@@ -18,6 +20,8 @@ __all__ = [
     "ERROR_TYPE_DEFAULTS",
     "ERROR_STATUS_CODES",
     "BaseResponse",
-    "CreateData",
-    "JWTTokenPayload"
+    "CreateDataResponse",
+    "UpdateDataResponse",
+    "JWTTokenPayload",
+    "StaffRole"
 ]

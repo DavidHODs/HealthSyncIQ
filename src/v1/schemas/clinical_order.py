@@ -1,11 +1,11 @@
 import uuid
 from datetime import datetime
-from typing import Any, Dict, Optional
 
 from pydantic import BaseModel
+from typing_extensions import Any, Dict, Optional
 
 from .clinical_encounter import ClinicalEncounterSchema
-from .department import DepartmentSchema
+from .department import DepartmentResponseSchema
 from .staff import StaffSchema
 
 
@@ -14,8 +14,8 @@ class ClinicalOrderSchema(BaseModel):
   encounter: ClinicalEncounterSchema
   order_type: str
   order_details: Dict[str, Any]
-  ordering_department: DepartmentSchema
-  target_department: DepartmentSchema
+  ordering_department: DepartmentResponseSchema
+  target_department: DepartmentResponseSchema
   ordered_by: StaffSchema
   priority: str
   status: str

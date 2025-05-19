@@ -7,11 +7,11 @@ Create Date: 2025-05-17 20:45:06.514761
 """
 import os
 import uuid
-from typing import Sequence, Union
 
 import bcrypt
 import sqlalchemy as sa
 from alembic import op
+from typing_extensions import Sequence, Union
 
 # revision identifiers, used by Alembic.
 revision: str = 'a46b95da4184'

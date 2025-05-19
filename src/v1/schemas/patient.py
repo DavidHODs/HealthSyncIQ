@@ -1,8 +1,8 @@
 import uuid
 from datetime import date
-from typing import Optional
 
 from pydantic import BaseModel
+from typing_extensions import Optional
 
 
 class PatientSchema(BaseModel):

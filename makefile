@@ -33,3 +33,6 @@ db-current:
 
 db-stamp:
 	poetry run alembic stamp head
+
+purge-caches:
+	find . -type d \( -name "__pycache__" -o -name ".mypy_cache" -o -name ".ruff_cache" -o -name ".pytest_cache" \) -exec rm -rf {} +
