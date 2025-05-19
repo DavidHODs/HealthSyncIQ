@@ -18,6 +18,6 @@ class AuthRoute:
         endpoint=self.controller.login,
         methods=["POST"],
         description="Auth Login Endpoint",
-        responses=get_responses(200, 500),
+        responses=get_responses(200, 401, 500),
         response_model=BaseResponse[LoginResponseSchema]
     )

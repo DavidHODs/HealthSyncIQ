@@ -28,9 +28,9 @@ def check_database() -> None:
   try:
     db = next(get_db())
     db.execute(text("SELECT 1"))
-    print("Database connection successful")
+    print("Successfully Connected to Postgres Database")
   except SQLAlchemyError as e:
-    print(f"Database connection failed: {e}")
+    print(f"Postgres Database Connection Failed: {e}")
     exit(1)
   finally:
     db.close()
