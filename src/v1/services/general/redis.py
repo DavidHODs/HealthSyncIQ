@@ -1,8 +1,8 @@
 import time
-from typing import Optional
 
 import redis
 import redis.exceptions
+from typing_extensions import Optional
 
 from settings import Config
 
@@ -114,7 +114,7 @@ class RedisService:
       return None
 
 
-def redis_service() -> "RedisService":
+def redis_service_instance() -> "RedisService":
   global _redis_service_instance
   if _redis_service_instance is None:
     _redis_service_instance = RedisService()

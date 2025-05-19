@@ -1,10 +1,10 @@
 import uuid
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel
+from typing_extensions import Optional
 
-    
+
 class DepartmentCreateRequestSchema(BaseModel):
   name: str
   description: str
@@ -15,7 +15,8 @@ class DepartmentCreateRequestSchema(BaseModel):
         "name": "Pharmacy",
         "description": "Responsible for dispensing drugs"
     }
-    
+
+
 class DepartmentUpdateRequestSchema(BaseModel):
   name: Optional[str] = None
   description: Optional[str] = None
@@ -45,4 +46,3 @@ class DepartmentResponseSchema(BaseModel):
     }
 
     from_attributes = True
-

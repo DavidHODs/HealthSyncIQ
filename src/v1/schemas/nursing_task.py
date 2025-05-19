@@ -1,8 +1,8 @@
 import uuid
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel
+from typing_extensions import Optional
 
 from .clinical_order import ClinicalOrderSchema
 from .staff import StaffSchema

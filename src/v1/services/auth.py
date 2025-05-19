@@ -7,14 +7,14 @@ from v1.models import StaffModel
 from v1.schemas import LoginRequestSchema, LoginResponseSchema, StaffSchema
 from v1.type_defs import APIResponse, ErrorTypeEnum
 
-from .general.jwt import jwt_service
-from .general.redis import redis_service
+from .general.jwt import jwt_service_instance
+from .general.redis import redis_service_instance
 
 
 class AuthService:
   def __init__(self) -> None:
-    self.jwt_service = jwt_service()
-    self.redis_service = redis_service()
+    self.jwt_service = jwt_service_instance()
+    self.redis_service = redis_service_instance()
 
   def login(self, login_data: LoginRequestSchema,
             db: Session) -> APIResponse[LoginResponseSchema]:

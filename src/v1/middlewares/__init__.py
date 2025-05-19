@@ -1,6 +1,5 @@
-from .auth import authentication
-
+from .auth import Authenticate
 
 __all__ = [
-    "authentication"
+    "Authenticate"
 ]

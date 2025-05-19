@@ -1,56 +1,61 @@
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 from typing_extensions import List
 
-from v1.errors import AppException
+from database.setup import get_db
 from v1.models import StaffModel
-from v1.services import JWTService, RedisService, jwt_service, redis_service
-from v1.type_defs import ErrorTypeEnum, JWTTokenPayload
+from v1.services import jwt_service_instance, redis_service_instance
+from v1.type_defs import JWTTokenPayload, StaffRole
 
-async def authentication(
-    roles: List[str],
-    db: Session,
-    credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer())
-) -> JWTTokenPayload:
-  token = credentials.credentials
-  redis_service: RedisService = redis_service()
-  jwt_service: JWTService = jwt_service()
 
-  try:
-    payload: JWTTokenPayload = jwt_service.decode_token(token)
-    if payload.get("role") not in roles:
-      raise AppException(
-          type=ErrorTypeEnum.UNAUTHORIZED
+class Authenticate:
+  def __init__(self, roles: List[StaffRole]):
+    self.roles = roles
+
+  def __call__(
+      self,
+      credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer()),
+      db: Session = Depends(get_db)
+  ) -> JWTTokenPayload:
+    token = credentials.credentials
+    redis_service = redis_service_instance()
+    jwt_service = jwt_service_instance()
+
+    try:
+      payload: JWTTokenPayload = jwt_service.decode_token(token)
+
+      if payload.get("role") not in {role.value for role in self.roles}:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permission for this operation"
+        )
+
+      if not redis_service.get(token):
+        staff = db.query(StaffModel).filter(
+            StaffModel.id == payload.get("id"),
+            StaffModel.deleted_at.is_(None),
+            StaffModel.is_active == True
+        ).first()
+
+        if not staff:
+          raise HTTPException(
+              status_code=status.HTTP_401_UNAUTHORIZED,
+              detail="Invalid authentication credentials"
+          )
+
+        new_token = jwt_service.create_token(id=staff.id, role=staff.role)
+        redis_auth_key = f"auth:{staff.id}"
+        redis_service.set(redis_auth_key, new_token)
+
+      return JWTTokenPayload(id=str(payload.get("id")),
+                             role=str(payload.get("role")))
+
+    except HTTPException:
+      raise
+    except Exception:
+      raise HTTPException(
+          status_code=status.HTTP_401_UNAUTHORIZED,
+          detail="Could not validate credentials",
+          headers={"WWW-Authenticate": "Bearer"}
       )
-
-    valid_token = redis_service.get(token)
-    if valid_token:
-      return payload
-
-    staff = db.query(StaffModel).filter(
-        StaffModel.id == payload.get("id"),
-        StaffModel.deleted_at.is_(None),
-        StaffModel.is_active == True
-    ).first()
-
-    if not staff:
-      raise AppException(
-          type=ErrorTypeEnum.UNAUTHORIZED
-      )
-
-    jwt_token: str = jwt_service.create_token(
-        id=staff.id,
-        role=staff.role
-    )
-
-    redis_auth_key = f"auth:{staff.id}"
-    redis_service.set(redis_auth_key, jwt_token)
-
-    return JWTTokenPayload(
-        id=str(staff.id),
-        role=staff.role
-    )
-
-  except Exception:
-    raise AppException(type=ErrorTypeEnum.INTERNAL_SERVER_ERROR)

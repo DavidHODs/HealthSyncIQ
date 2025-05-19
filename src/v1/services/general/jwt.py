@@ -1,9 +1,8 @@
 import datetime
-from typing import Any, Dict, cast
 from uuid import UUID
 
 import jwt
-from typing_extensions import Optional
+from typing_extensions import Any, Dict, Optional, cast
 
 from settings import Config
 from v1.errors import AppException
@@ -65,7 +64,7 @@ class JWTService:
       raise AppException.classify_error(error=exc)
 
 
-def jwt_service() -> JWTService:
+def jwt_service_instance() -> JWTService:
   global _jwt_service_instance
 
   if _jwt_service_instance is None:

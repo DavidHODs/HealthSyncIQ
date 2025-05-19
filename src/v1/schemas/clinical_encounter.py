@@ -1,10 +1,10 @@
 import uuid
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel
+from typing_extensions import Optional
 
-from .department import DepartmentSchema
+from .department import DepartmentResponseSchema
 from .patient import PatientSchema
 from .staff import StaffSchema
 
@@ -17,7 +17,7 @@ class ClinicalEncounterSchema(BaseModel):
   start_date: datetime
   end_date: Optional[datetime] = None
   attending_doctor: StaffSchema
-  department: DepartmentSchema
+  department: DepartmentResponseSchema
   status: str
   created_at: Optional[datetime] = None
 

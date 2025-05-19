@@ -37,7 +37,7 @@ class ErrorResponse(TypedDict):
 class CreateDataResponse(TypedDict):
   id: UUID
   message: str
-  
+
 
 class UpdateDataResponse(TypedDict):
   id: UUID
