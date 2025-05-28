@@ -1,7 +1,6 @@
 from contextlib import asynccontextmanager
 
 import uvicorn
-from dotenv import load_dotenv
 from fastapi import FastAPI, Security
 from fastapi.security import HTTPBearer
 from psycopg import OperationalError
@@ -15,7 +14,7 @@ from v1.routes import all_routes
 from v1.services.general.redis import RedisService, redis_service_instance
 from v1.type_defs import UvicornKwargs
 
-load_dotenv(dotenv_path=".env")
+Config.validate_required_environment_variables()
 INIT_START_TIME
 
 redis_service: RedisService = redis_service_instance()

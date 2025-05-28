@@ -8,11 +8,11 @@ from database import get_db
 from v1.errors import AppException, ExceptionHandler
 from v1.middlewares import Authenticate
 from v1.schemas import (
-  StaffCreateRequestSchema,
-  StaffResponseSchema,
-  StaffUpdateRequestSchema,
+  PatientCreateRequestSchema,
+  PatientResponseSchema,
+  PatientUpdateRequestSchema,
 )
-from v1.services import StaffService
+from v1.services import PatientService
 from v1.type_defs import (
   APIResponse,
   CreateDataResponse,
@@ -22,30 +22,30 @@ from v1.type_defs import (
 )
 
 
-class StaffController:
+class PatientController:
   def __init__(self) -> None:
-    self.staff_service: StaffService = StaffService()
+    self.patient_service: PatientService = PatientService()
 
   def create(
       self,
-      data: StaffCreateRequestSchema,
+      data: PatientCreateRequestSchema,
       db: Session = Depends(get_db),
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
   ) -> APIResponse[CreateDataResponse] | Response:
     try:
-      return self.staff_service.create(data, db)
+      return self.patient_service.create(data, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
 
   def update(
       self,
       id: UUID,
-      data: StaffUpdateRequestSchema,
+      data: PatientUpdateRequestSchema,
       db: Session = Depends(get_db),
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
   ) -> APIResponse[UpdateDataResponse] | Response:
     try:
-      return self.staff_service.update(id, data, db)
+      return self.patient_service.update(id, data, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
 
@@ -55,11 +55,11 @@ class StaffController:
       page: int = 1,
       db: Session = Depends(get_db),
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
-  ) -> APIResponse[List[StaffResponseSchema]] | Response:
+  ) -> APIResponse[List[PatientResponseSchema]] | Response:
     try:
       offset: int = (page - 1) * limit
 
-      return self.staff_service.getAll(limit, offset, db)
+      return self.patient_service.getAll(limit, offset, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
 
@@ -68,9 +68,9 @@ class StaffController:
       id: UUID,
       db: Session = Depends(get_db),
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
-  ) -> APIResponse[StaffResponseSchema] | Response:
+  ) -> APIResponse[PatientResponseSchema] | Response:
     try:
-      return self.staff_service.getOne(id, db)
+      return self.patient_service.getOne(id, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
 
@@ -81,7 +81,7 @@ class StaffController:
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
   ) -> APIResponse[str] | Response:
     try:
-      return self.staff_service.delete(id, db)
+      return self.patient_service.delete(id, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
 
@@ -92,6 +92,6 @@ class StaffController:
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
   ) -> APIResponse[str] | Response:
     try:
-      return self.staff_service.restore(id, db)
+      return self.patient_service.restore(id, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)

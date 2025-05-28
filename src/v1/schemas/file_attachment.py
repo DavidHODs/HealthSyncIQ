@@ -18,7 +18,7 @@ class FileAttachmentSchema(BaseModel):
   uploaded_by: StaffResponseSchema
   uploaded_at: datetime
   description: Optional[str] = None
-  created_at: Optional[datetime] = None
+  created_at: datetime
   updated_at: Optional[datetime] = None
   deleted_at: Optional[datetime] = None
 

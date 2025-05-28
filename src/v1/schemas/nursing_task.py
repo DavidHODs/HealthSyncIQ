@@ -22,7 +22,7 @@ class NursingTaskSchema(BaseModel):
   verified_by: StaffResponseSchema
   verified_at: Optional[datetime] = None
   result_notes: Optional[str] = None
-  created_at: Optional[datetime] = None
+  created_at: datetime
   updated_at: Optional[datetime] = None
   deleted_at: Optional[datetime] = None
 
