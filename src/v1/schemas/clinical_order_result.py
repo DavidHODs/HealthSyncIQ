@@ -19,7 +19,7 @@ class ClinicalOrderResultSchema(BaseModel):
   verified_by: StaffResponseSchema
   performed_at: Optional[datetime] = None
   verified_at: Optional[datetime] = None
-  created_at: Optional[datetime] = None
+  created_at: datetime
   updated_at: Optional[datetime] = None
   deleted_at: Optional[datetime] = None
 

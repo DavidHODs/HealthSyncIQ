@@ -20,7 +20,7 @@ class MedicationDispensingSchema(BaseModel):
   dispensed_at: Optional[datetime] = None
   pharmacy_notes: Optional[str] = None
   patient_instructions: Optional[str] = None
-  created_at: Optional[datetime] = None
+  created_at: datetime
   updated_at: Optional[datetime] = None
   deleted_at: Optional[datetime] = None
 

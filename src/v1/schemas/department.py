@@ -33,7 +33,7 @@ class DepartmentResponseSchema(BaseModel):
   id: uuid.UUID
   name: str
   description: Optional[str] = None
-  created_at: Optional[datetime] = None
+  created_at: datetime
   updated_at: Optional[datetime] = None
 
   class Config:
