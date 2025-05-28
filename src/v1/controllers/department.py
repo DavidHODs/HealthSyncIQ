@@ -51,11 +51,15 @@ class DepartmentController:
 
   def getAll(
       self,
+      limit: int = 15,
+      page: int = 1,
       db: Session = Depends(get_db),
       auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
   ) -> APIResponse[List[DepartmentResponseSchema]] | Response:
     try:
-      return self.department_service.getAll(db)
+      offset: int = (page - 1) * limit
+
+      return self.department_service.getAll(limit, offset, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
 

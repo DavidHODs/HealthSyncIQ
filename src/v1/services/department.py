@@ -76,11 +76,16 @@ class DepartmentService:
     except Exception as exc:
       raise AppException.classify_error(exc)
 
-  def getAll(self, db: Session) -> APIResponse[List[DepartmentResponseSchema]]:
+  def getAll(self, limit: int, offset: int,
+             db: Session) -> APIResponse[List[DepartmentResponseSchema]]:
     try:
       departments = db.query(DepartmentModel).filter(
           DepartmentModel.deleted_at.is_(None)
-      ).order_by(asc(DepartmentModel.name)).all()
+      ).order_by(asc(DepartmentModel.name)).offset(offset).limit(limit).all()
+
+      total = db.query(DepartmentModel).filter(
+          DepartmentModel.deleted_at.is_(None)
+      ).count()
 
       result = [
           DepartmentResponseSchema(
@@ -94,7 +99,12 @@ class DepartmentService:
       ]
 
       return {
-          "data": result
+          "data": result,
+          "metadata": {
+              "total": total,
+              "count": len(result),
+              "page": offset // limit + 1,
+          }
       }
 
     except Exception as exc:

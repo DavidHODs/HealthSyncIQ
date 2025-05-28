@@ -26,7 +26,6 @@ bcrypt = "^4.3.0"
 pyjwt = "^2.10.1"
 redis = "^6.1.0"
 cryptography = "^45.0.3"
-cryptography-fernet = "^0.1.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = ">=3.7.0,<4.0.0"

@@ -122,13 +122,18 @@ class StaffService:
     except Exception as exc:
       raise AppException.classify_error(exc)
 
-  def getAll(self, db: Session) -> APIResponse[List[StaffResponseSchema]]:
+  def getAll(self, limit: int, offset: int,
+             db: Session) -> APIResponse[List[StaffResponseSchema]]:
     try:
       staffs = db.query(StaffModel).options(
           selectinload(StaffModel.departments)
       ).filter(
           StaffModel.deleted_at.is_(None)
-      ).order_by(asc(StaffModel.surname)).all()
+      ).order_by(asc(StaffModel.surname)).offset(offset).limit(limit).all()
+
+      total = db.query(StaffModel).filter(
+          StaffModel.deleted_at.is_(None)
+      ).count()
 
       result = [
           StaffResponseSchema(
@@ -152,7 +157,12 @@ class StaffService:
       ]
 
       return {
-          "data": result
+          "data": result,
+          "metadata": {
+              "total": total,
+              "count": len(result),
+              "page": offset // limit + 1,
+          }
       }
 
     except Exception as exc:

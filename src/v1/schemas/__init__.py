@@ -6,7 +6,7 @@ from .auth import (
 from .clinical_encounter import (
   ClinicalEncounterCreateRequestSchema,
   ClinicalEncounterResponseSchema,
-  ClinicalEncounterUpdateRequestSchema
+  ClinicalEncounterUpdateRequestSchema,
 )
 from .clinical_note import ClinicalNoteSchema
 from .clinical_order import ClinicalOrderSchema
@@ -22,9 +22,9 @@ from .file_attachment import FileAttachmentSchema
 from .medication_dispensing import MedicationDispensingSchema
 from .nursing_task import NursingTaskSchema
 from .patient import (
-  PatientUpdateRequestSchema,
   PatientCreateRequestSchema,
-  PatientResponseSchema
+  PatientResponseSchema,
+  PatientUpdateRequestSchema,
 )
 from .staff import (
   StaffCreateRequestSchema,

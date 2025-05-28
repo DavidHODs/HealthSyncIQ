@@ -1,8 +1,8 @@
-"""add_phone_number_and_email_to_patients_table
+"""alter_registration_number_to_registration_code
 
-Revision ID: 8dc71d21a294
-Revises: 882b303aaf46
-Create Date: 2025-05-28 15:09:41.817737
+Revision ID: 8c5377e5d660
+Revises: 8dc71d21a294
+Create Date: 2025-05-28 16:43:46.926802
 
 """
 import sqlalchemy as sa
@@ -10,8 +10,8 @@ from alembic import op
 from typing_extensions import Sequence, Union
 
 # revision identifiers, used by Alembic.
-revision: str = '8dc71d21a294'
-down_revision: Union[str, None] = '882b303aaf46'
+revision: str = '8c5377e5d660'
+down_revision: Union[str, None] = '8dc71d21a294'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -20,8 +20,7 @@ def upgrade() -> None:
   """Upgrade schema."""
   op.execute(sa.text("""
         ALTER TABLE patients
-        ADD COLUMN IF NOT EXISTS phone_number VARCHAR(15) NULL,
-        ADD COLUMN IF NOT EXISTS email VARCHAR(255) NULL;
+        RENAME COLUMN registration_number TO registration_code;
     """))
 
 
@@ -29,6 +28,5 @@ def downgrade() -> None:
   """Downgrade schema."""
   op.execute(sa.text("""
         ALTER TABLE patients
-        DROP COLUMN IF EXISTS phone_number,
-        DROP COLUMN IF EXISTS email;
+        RENAME COLUMN registration_code TO registration_number;
     """))

@@ -7,6 +7,7 @@ from v1.docs import get_responses
 from v1.middlewares import Authenticate
 from v1.schemas import StaffResponseSchema
 from v1.type_defs import (
+  APIResponse,
   BaseResponse,
   CreateDataResponse,
   StaffRole,
@@ -48,7 +49,7 @@ class StaffRoute:
         description="Get all Staffs",
         dependencies=[Depends(Authenticate([StaffRole.ADMIN]))],
         responses=get_responses(200, 401, 500),
-        response_model=BaseResponse[List[StaffResponseSchema]]
+        response_model=APIResponse[List[StaffResponseSchema]]
     )
 
     self.router.add_api_route(
