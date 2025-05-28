@@ -3,7 +3,11 @@ from .auth import (
   LoginResponseSchema,
   LoginStaffResponseSchema,
 )
-from .clinical_encounter import ClinicalEncounterSchema
+from .clinical_encounter import (
+  ClinicalEncounterCreateRequestSchema,
+  ClinicalEncounterResponseSchema,
+  ClinicalEncounterUpdateRequestSchema
+)
 from .clinical_note import ClinicalNoteSchema
 from .clinical_order import ClinicalOrderSchema
 from .clinical_order_result import ClinicalOrderResultSchema
@@ -17,7 +21,11 @@ from .diagnosis import DiagnosisSchema
 from .file_attachment import FileAttachmentSchema
 from .medication_dispensing import MedicationDispensingSchema
 from .nursing_task import NursingTaskSchema
-from .patient import PatientSchema
+from .patient import (
+  PatientUpdateRequestSchema,
+  PatientCreateRequestSchema,
+  PatientResponseSchema
+)
 from .staff import (
   StaffCreateRequestSchema,
   StaffDepartmentResponseSchema,
@@ -34,8 +42,12 @@ __all__ = [
     "DepartmentUpdateRequestSchema",
     "DepartmentResponseSchema",
     "DepartmentMembershipSchema",
-    "PatientSchema",
-    "ClinicalEncounterSchema",
+    "PatientUpdateRequestSchema",
+    "PatientCreateRequestSchema",
+    "PatientResponseSchema",
+    "ClinicalEncounterCreateRequestSchema",
+    "ClinicalEncounterResponseSchema",
+    "ClinicalEncounterUpdateRequestSchema",
     "DiagnosisSchema",
     "ClinicalNoteSchema",
     "ClinicalOrderSchema",
