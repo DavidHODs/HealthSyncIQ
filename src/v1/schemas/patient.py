@@ -54,19 +54,19 @@ class PatientUpdateRequestSchema(BaseModel):
   class Config:
     extra = "forbid"
     json_schema_extra = {
-      "example": {
-        "surname": "Doe",
-        "first_name": "John",
-        "last_name": "Smith",
-        "dob": "1990-01-01",
-        "genotype": "AA",
-        "blood_group": "O+",
-        "gender": "Male",
-        "contact_information": "+1234567890",
-        "emergency_contact": "+0987654321",
-        "email": "john.doe@example.com",
-        "phone_number": "+1122334455"
-      }
+        "example": {
+            "surname": "Doe",
+            "first_name": "John",
+            "last_name": "Smith",
+            "dob": "1990-01-01",
+            "genotype": "AA",
+            "blood_group": "O+",
+            "gender": "Male",
+            "contact_information": "+1234567890",
+            "emergency_contact": "+0987654321",
+            "email": "john.doe@example.com",
+            "phone_number": "+1122334455"
+        }
     }
     from_attributes = True
 

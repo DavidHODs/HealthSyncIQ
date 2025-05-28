@@ -1,12 +1,14 @@
 import datetime
 import uuid
-from typing import Optional
 
 from sqlalchemy import ForeignKey, String, Text, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing_extensions import Optional
 
 from .base import Base
+from .patient import PatientModel
+from .staff import StaffModel
 
 
 class ClinicalEncounterModel(Base):
@@ -14,7 +16,7 @@ class ClinicalEncounterModel(Base):
 
   id: Mapped[uuid.UUID] = mapped_column(
       UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-  patient: Mapped[uuid.UUID] = mapped_column(
+  patient_id: Mapped[uuid.UUID] = mapped_column(
       UUID(as_uuid=True),
       ForeignKey("patients.id", ondelete="CASCADE"),
       nullable=False
@@ -27,10 +29,10 @@ class ClinicalEncounterModel(Base):
       server_default=func.now()
   )
   end_date: Mapped[Optional[datetime.datetime]] = mapped_column(nullable=True)
-  attending_doctor_id: Mapped[Optional[uuid.UUID]] = mapped_column(
+  attending_doctor_id: Mapped[uuid.UUID] = mapped_column(
       UUID(as_uuid=True),
-      ForeignKey("staffs.id", ondelete="SET NULL"),
-      nullable=True
+      ForeignKey("staffs.id", ondelete="RESTRICT"),
+      nullable=False
   )
   status: Mapped[str] = mapped_column(
       String(50), nullable=False, default='Active')
@@ -45,5 +47,18 @@ class ClinicalEncounterModel(Base):
   )
   deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(nullable=True)
 
+  staff: Mapped["StaffModel"] = relationship(
+      "StaffModel",
+      lazy="selectin",
+      uselist=False,
+      foreign_keys=[attending_doctor_id],
+  )
+  patient: Mapped["PatientModel"] = relationship(
+      "PatientModel",
+      lazy="selectin",
+      uselist=False,
+      foreign_keys=[patient_id],
+  )
+
   def __repr__(self) -> str:
-    return f"<ClinicalEncounterModel(id='{self.id}', patient_id='{self.patient}', encounter_type='{self.encounter_type}')>"
+    return f"<ClinicalEncounterModel(id='{self.id}', patient_id='{self.patient_id}', encounter_type='{self.encounter_type}')>"

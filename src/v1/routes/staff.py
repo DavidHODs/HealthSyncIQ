@@ -75,7 +75,7 @@ class StaffRoute:
     self.router.add_api_route(
         path="/staffs/{id}/restore",
         endpoint=self.controller.restore,
-        methods=["PUT"],
+        methods=["PATCH"],
         description="Restore a soft-deleted Staff by ID",
         dependencies=[Depends(Authenticate([StaffRole.ADMIN]))],
         responses=get_responses(200, 401, 404, 500),
