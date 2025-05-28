@@ -24,6 +24,8 @@ class PatientModel(Base):
   gender: Mapped[str | None] = mapped_column(String, nullable=True)
   contact_information: Mapped[str | None] = mapped_column(String, nullable=True)
   emergency_contact: Mapped[str | None] = mapped_column(String, nullable=True)
+  email: Mapped[str | None] = mapped_column(String, nullable=True)
+  phone_number: Mapped[str | None] = mapped_column(String, nullable=True)
   created_at: Mapped[datetime.datetime] = mapped_column(
     TIMESTAMP(timezone=True),
     server_default=func.now(),
