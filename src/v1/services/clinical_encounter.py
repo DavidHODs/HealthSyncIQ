@@ -31,10 +31,13 @@ class ClinicalEncounterService:
   def create(self, data: ClinicalEncounterCreateRequestSchema, auth_payload: JWTTokenPayload,
              db: Session) -> APIResponse[CreateDataResponse]:
     try:
-      encounter = ClinicalEncounterModel(**data.model_dump())
+      encounter_data = data.model_dump()
+      encounter_data.pop("patient")
+      encounter = ClinicalEncounterModel(**encounter_data)
+      
       encounter.patient_id = data.patient.id
       encounter.attending_doctor_id = UUID(auth_payload["id"])
-
+      
       db.add(encounter)
       db.commit()
       db.refresh(encounter)
