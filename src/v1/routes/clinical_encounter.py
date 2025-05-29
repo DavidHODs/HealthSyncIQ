@@ -28,6 +28,7 @@ class ClinicalEncounterRoute:
         methods=["POST"],
         description="Create a new Clinical Encounter",
         dependencies=[Depends(Authenticate([StaffRole.DOCTOR]))],
+        status_code=201,
         responses=get_responses(201, 400, 401, 500),
         response_model=BaseResponse[CreateDataResponse]
     )
