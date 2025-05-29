@@ -233,3 +233,31 @@ class ClinicalEncounterService:
 
     except Exception as exc:
       raise AppException.classify_error(exc)
+
+  def close_encounter(self, id: UUID, patient_id: UUID,
+              db: Session) -> APIResponse[str]:
+    try:
+      encounter = db.query(ClinicalEncounterModel).filter(
+          ClinicalEncounterModel.id == id,
+          ClinicalEncounterModel.patient_id == patient_id
+      ).first()
+
+      if not encounter:
+        raise AppException(type=ErrorTypeEnum.NOT_FOUND)
+            
+      if encounter.end_date:
+        raise AppException(
+            type=ErrorTypeEnum.BAD_REQUEST,
+            detail="This clinical encounter has already been closed and cannot be closed again."
+        )
+        
+      encounter.end_date = datetime.datetime.now(datetime.timezone.utc)
+      db.commit()
+      db.refresh(encounter)
+
+      return {
+          "data": f"Encounter {encounter.id} closed successfully"
+      }
+
+    except Exception as exc:
+      raise AppException.classify_error(exc)

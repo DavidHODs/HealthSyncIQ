@@ -102,3 +102,15 @@ class ClinicalEncounterController:
       return self.clinical_encounter_service.restore(id, patient_id, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
+    
+  def close_encounter(
+      self,
+      id: UUID,
+      patient_id: UUID,
+      db: Session = Depends(get_db),
+      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.DOCTOR]))
+  ) -> APIResponse[str] | Response:
+    try:
+      return self.clinical_encounter_service.close_encounter(id, patient_id, db)
+    except AppException as exc:
+      return ExceptionHandler.handle_error(exc)
