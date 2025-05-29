@@ -30,7 +30,7 @@ class DiagnosisService:
              db: Session) -> APIResponse[CreateDataResponse]:
     try:
       diagnosis_data = data.model_dump()
-      diagnosis_data.pop("diagnosis")
+      diagnosis_data.pop("encounter")
       diagnosis = DiagnosisModel(**diagnosis_data)
 
       diagnosis.encounter_id = data.encounter.id

@@ -50,7 +50,7 @@ class DiagnosisModel(Base):
       foreign_keys=[diagnosed_by_id],
   )
   encounter: Mapped["ClinicalEncounterModel"] = relationship(
-      "PatientModel",
+      "ClinicalEncounterModel",
       lazy="selectin",
       uselist=False,
       foreign_keys=[encounter_id],
