@@ -8,7 +8,11 @@ from .clinical_encounter import (
   ClinicalEncounterResponseSchema,
   ClinicalEncounterUpdateRequestSchema,
 )
-from .clinical_note import ClinicalNoteSchema
+from .clinical_note import (
+  ClinicalNoteCreateRequestSchema,
+  ClinicalNoteResponseSchema,
+  ClinicalNoteUpdateRequestSchema,
+)
 from .clinical_order import ClinicalOrderSchema
 from .clinical_order_result import ClinicalOrderResultSchema
 from .department import (
@@ -55,7 +59,9 @@ __all__ = [
     "DiagnosisCreateRequestSchema",
     "DiagnosisResponseSchema",
     "DiagnosisUpdateRequestSchema",
-    "ClinicalNoteSchema",
+    "ClinicalNoteCreateRequestSchema",
+    "ClinicalNoteResponseSchema",
+    "ClinicalNoteUpdateRequestSchema",
     "ClinicalOrderSchema",
     "ClinicalOrderResultSchema",
     "FileAttachmentSchema",

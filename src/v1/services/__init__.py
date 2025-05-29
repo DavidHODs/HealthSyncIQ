@@ -1,6 +1,7 @@
 from .app import AppService
 from .auth import AuthService
 from .clinical_encounter import ClinicalEncounterService
+from .clinical_note import ClinicalNoteService
 from .department import DepartmentService
 from .diagnosis import DiagnosisService
 from .general.encryption import EncryptionService
@@ -21,5 +22,6 @@ __all__ = [
     "ClinicalEncounterService",
     "EncryptionService",
     "PatientService",
-    "DiagnosisService"
+    "DiagnosisService",
+    "ClinicalNoteService"
 ]
