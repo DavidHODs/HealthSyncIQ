@@ -108,6 +108,7 @@ class ClinicalEncounterService:
               presenting_complaint=encounter.presenting_complaint,
               status=encounter.status,
               created_at=encounter.created_at,
+              updated_at=encounter.updated_at,
               start_date=encounter.start_date,
               end_date=encounter.end_date,
               attending_doctor=StaffResponseSchema(
@@ -161,6 +162,7 @@ class ClinicalEncounterService:
           presenting_complaint=encounter.presenting_complaint,
           status=encounter.status,
           created_at=encounter.created_at,
+          updated_at=encounter.updated_at,
           start_date=encounter.start_date,
           end_date=encounter.end_date,
           attending_doctor=StaffResponseSchema(
