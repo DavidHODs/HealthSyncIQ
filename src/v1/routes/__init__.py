@@ -5,6 +5,7 @@ from .app import AppRoute
 from .auth import AuthRoute
 from .clinical_encounter import ClinicalEncounterRoute
 from .department import DepartmentRoute
+from .diagnosis import DiagnosisRoute
 from .patient import PatientRoute
 from .staff import StaffRoute
 
@@ -14,11 +15,13 @@ department_routes: APIRouter = DepartmentRoute().router
 staff_routes: APIRouter = StaffRoute().router
 patient_routes: APIRouter = PatientRoute().router
 clinical_encounter_routes: APIRouter = ClinicalEncounterRoute().router
+diagnosis_routes: APIRouter = DiagnosisRoute().router
 
 all_routes: Sequence[Tuple[APIRouter, List[str]]] = [
     (auth_routes, ["Auth"]),
     (clinical_encounter_routes, ["Clinical Encounter"]),
     (department_routes, ["Department"]),
+    (diagnosis_routes, ["Diagnosis"]),
     (app_routes, ["Health"]),
     (staff_routes, ["Staff"]),
     (patient_routes, ["Patient"])

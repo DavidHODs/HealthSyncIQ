@@ -102,7 +102,7 @@ class ClinicalEncounterController:
       return self.clinical_encounter_service.restore(id, patient_id, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
-    
+
   def close_encounter(
       self,
       id: UUID,

@@ -17,7 +17,11 @@ from .department import (
   DepartmentUpdateRequestSchema,
 )
 from .department_membership import DepartmentMembershipSchema
-from .diagnosis import DiagnosisSchema
+from .diagnosis import (
+  DiagnosisCreateRequestSchema,
+  DiagnosisResponseSchema,
+  DiagnosisUpdateRequestSchema,
+)
 from .file_attachment import FileAttachmentSchema
 from .medication_dispensing import MedicationDispensingSchema
 from .nursing_task import NursingTaskSchema
@@ -48,7 +52,9 @@ __all__ = [
     "ClinicalEncounterCreateRequestSchema",
     "ClinicalEncounterResponseSchema",
     "ClinicalEncounterUpdateRequestSchema",
-    "DiagnosisSchema",
+    "DiagnosisCreateRequestSchema",
+    "DiagnosisResponseSchema",
+    "DiagnosisUpdateRequestSchema",
     "ClinicalNoteSchema",
     "ClinicalOrderSchema",
     "ClinicalOrderResultSchema",
