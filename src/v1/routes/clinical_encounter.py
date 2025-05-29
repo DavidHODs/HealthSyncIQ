@@ -81,13 +81,13 @@ class ClinicalEncounterRoute:
         responses=get_responses(200, 401, 404, 500),
         response_model=BaseResponse[str]
     )
-    
+
     self.router.add_api_route(
-      path="/clinical-encounters/{id}/{patient_id}/close",
-      endpoint=self.controller.close_encounter,
-      methods=["PATCH"],
-      description="Close a Clinical Encounter",
-      dependencies=[Depends(Authenticate([StaffRole.DOCTOR]))],
-      responses=get_responses(200, 401, 404, 500),
-      response_model=BaseResponse[str]
-        )
+        path="/clinical-encounters/{id}/{patient_id}/close",
+        endpoint=self.controller.close_encounter,
+        methods=["PATCH"],
+        description="Close a Clinical Encounter",
+        dependencies=[Depends(Authenticate([StaffRole.DOCTOR]))],
+        responses=get_responses(200, 401, 404, 500),
+        response_model=BaseResponse[str]
+    )

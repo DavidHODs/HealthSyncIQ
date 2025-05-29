@@ -20,14 +20,14 @@ class ClinicalEncounterCreateRequestSchema(BaseModel):
   class Config:
     extra = "forbid"
     json_schema_extra = {
-      "example": {
-        "patient": {
-            "id": "123e4567-e89b-12d3-a456-426614174001"
-        },
-        "encounter_type": "Consultation",
-        "presenting_complaint": "Fever and cough",
-        "status": "active"
-      }
+        "example": {
+            "patient": {
+                "id": "123e4567-e89b-12d3-a456-426614174001"
+            },
+            "encounter_type": "Consultation",
+            "presenting_complaint": "Fever and cough",
+            "status": "active"
+        }
     }
 
 
@@ -39,11 +39,11 @@ class ClinicalEncounterUpdateRequestSchema(BaseModel):
   class Config:
     extra = "forbid"
     json_schema_extra = {
-      "example": {
-        "encounter_type": "Consultation",
-        "presenting_complaint": "Fever and cough",
-        "status": "active"
-      }
+        "example": {
+            "encounter_type": "Consultation",
+            "presenting_complaint": "Fever and cough",
+            "status": "active"
+        }
     }
 
 
@@ -60,13 +60,13 @@ class ClinicalEncounterResponseSchema(BaseModel):
   class Config:
     from_attributes = True
     json_schema_extra = {
-        "id": "123e4567-e89b-12d3-a456-426614174004",
-        "encounter_type": "Consultation",
-        "presenting_complaint": "Fever and cough",
-        "start_date": "2025-05-17T10:00:00Z",
-        "end_date": None,
-        "attending_doctor": {
-            "example": {
+        "example": {
+            "id": "123e4567-e89b-12d3-a456-426614174004",
+            "encounter_type": "Consultation",
+            "presenting_complaint": "Fever and cough",
+            "start_date": "2025-05-17T10:00:00Z",
+            "end_date": None,
+            "attending_doctor": {
                 "id": "123e4567-e89b-12d3-a456-426614174001",
                 "email": "jane.doe@example.com",
                 "title": "Dr.",
@@ -81,8 +81,8 @@ class ClinicalEncounterResponseSchema(BaseModel):
                         "description": "Handles all pharmaceutical needs"
                     }
                 ]
-            }
-        },
-        "status": "active",
-        "created_at": "2025-05-17T10:00:00Z"
+            },
+            "status": "active",
+            "created_at": "2025-05-17T10:00:00Z"
+        }
     }

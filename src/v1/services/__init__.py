@@ -2,6 +2,7 @@ from .app import AppService
 from .auth import AuthService
 from .clinical_encounter import ClinicalEncounterService
 from .department import DepartmentService
+from .diagnosis import DiagnosisService
 from .general.encryption import EncryptionService
 from .general.jwt import JWTService, jwt_service_instance
 from .general.redis import RedisService, redis_service_instance
@@ -20,4 +21,5 @@ __all__ = [
     "ClinicalEncounterService",
     "EncryptionService",
     "PatientService",
+    "DiagnosisService"
 ]

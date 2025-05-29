@@ -2,6 +2,7 @@ from .app import AppController
 from .auth import AuthController
 from .clinical_encounter import ClinicalEncounterController
 from .department import DepartmentController
+from .diagnosis import DiagnosisController
 from .patient import PatientController
 from .staff import StaffController
 
@@ -11,5 +12,6 @@ __all__ = [
     "DepartmentController",
     "StaffController",
     "PatientController",
-    "ClinicalEncounterController"
+    "ClinicalEncounterController",
+    "DiagnosisController"
 ]
