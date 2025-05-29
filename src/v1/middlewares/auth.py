@@ -31,7 +31,7 @@ class Authenticate:
             detail="Insufficient permission for this operation"
         )
 
-      if not redis_service.get(token):
+      if not redis_service.get(f"auth:{payload['id']}"):
         staff = db.query(StaffModel).filter(
             StaffModel.id == payload.get("id"),
             StaffModel.deleted_at.is_(None),
@@ -45,7 +45,7 @@ class Authenticate:
           )
 
         new_token = jwt_service.create_token(id=staff.id, role=staff.role)
-        redis_auth_key = f"auth:{staff.id}"
+        redis_auth_key = f"auths:{staff.id}"
         redis_service.set(redis_auth_key, new_token)
 
       return JWTTokenPayload(id=str(payload.get("id")),

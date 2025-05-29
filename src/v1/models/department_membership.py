@@ -3,7 +3,7 @@ import uuid
 
 from sqlalchemy import ForeignKey, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from typing_extensions import Optional
 
@@ -39,14 +39,14 @@ class DepartmentMembershipModel(Base):
   deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(
       TIMESTAMP(timezone=True), nullable=True)
 
-  staff = relationship(
-      "StaffModel",
-      backref="department_memberships",
-      uselist=False)
-  department = relationship(
-      "DepartmentModel",
-      backref="staff_memberships",
-      uselist=False)
+#   staff = relationship(
+#       "StaffModel",
+#       backref="department_memberships",
+#       uselist=False)
+#   department = relationship(
+#       "DepartmentModel",
+#       backref="staff_memberships",
+#       uselist=False)
 
   def __repr__(self) -> str:
     return (

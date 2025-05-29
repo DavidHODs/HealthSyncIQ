@@ -4,8 +4,6 @@ from datetime import datetime
 from pydantic import BaseModel
 from typing_extensions import Optional
 
-from .department import DepartmentResponseSchema
-from .patient import PatientResponseSchema
 from .staff import StaffResponseSchema
 
 
@@ -22,12 +20,14 @@ class ClinicalEncounterCreateRequestSchema(BaseModel):
   class Config:
     extra = "forbid"
     json_schema_extra = {
+      "example": {
         "patient": {
             "id": "123e4567-e89b-12d3-a456-426614174001"
         },
         "encounter_type": "Consultation",
         "presenting_complaint": "Fever and cough",
         "status": "active"
+      }
     }
 
 
@@ -39,21 +39,21 @@ class ClinicalEncounterUpdateRequestSchema(BaseModel):
   class Config:
     extra = "forbid"
     json_schema_extra = {
+      "example": {
         "encounter_type": "Consultation",
         "presenting_complaint": "Fever and cough",
         "status": "active"
+      }
     }
 
 
 class ClinicalEncounterResponseSchema(BaseModel):
   id: uuid.UUID
-  patient: PatientResponseSchema
   encounter_type: str
   presenting_complaint: Optional[str] = None
   start_date: datetime
   end_date: Optional[datetime] = None
   attending_doctor: StaffResponseSchema
-  department: DepartmentResponseSchema
   status: str
   created_at: datetime
 
@@ -61,21 +61,6 @@ class ClinicalEncounterResponseSchema(BaseModel):
     from_attributes = True
     json_schema_extra = {
         "id": "123e4567-e89b-12d3-a456-426614174004",
-        "patient": {
-            "id": "123e4567-e89b-12d3-a456-426614174000",
-            "registration_number": "HS123456",
-            "surname": "Doe",
-            "first_name": "John",
-            "last_name": "Smith",
-            "dob": "1990-01-01",
-            "genotype": "AA",
-            "blood_group": "O+",
-            "gender": "Male",
-            "contact_information": "+1234567890",
-            "emergency_contact": "+0987654321",
-            "created_at": "2025-05-17T22:22:25+01:00",
-            "updated_at": None
-        },
         "encounter_type": "Consultation",
         "presenting_complaint": "Fever and cough",
         "start_date": "2025-05-17T10:00:00Z",

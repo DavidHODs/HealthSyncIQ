@@ -110,24 +110,28 @@ class PatientService:
       ).count()
 
       result = [
-        PatientResponseSchema(
-          id=patient.id,
-          registration_code=patient.registration_code,
-          surname=self.encryption_service.decrypt(patient.surname),
-          first_name=self.encryption_service.decrypt(patient.first_name),
-          last_name=self.encryption_service.decrypt(patient.last_name) if patient.last_name else None,
-          dob=patient.dob,
-          genotype=patient.genotype,
-          blood_group=patient.blood_group,
-          gender=patient.gender,
-          contact_information=self.encryption_service.decrypt(patient.contact_information) if patient.contact_information else None,
-          emergency_contact=self.encryption_service.decrypt(patient.emergency_contact) if patient.emergency_contact else None,
-          email=self.encryption_service.decrypt(patient.email),
-          phone_number=self.encryption_service.decrypt(patient.phone_number) if patient.phone_number else None,
-          created_at=patient.created_at,
-          updated_at=patient.updated_at
-        )
-        for patient in patients
+          PatientResponseSchema(
+              id=patient.id,
+              registration_code=patient.registration_code,
+              surname=self.encryption_service.decrypt(patient.surname),
+              first_name=self.encryption_service.decrypt(patient.first_name),
+              last_name=self.encryption_service.decrypt(
+                  patient.last_name) if patient.last_name else None,
+              dob=patient.dob,
+              genotype=patient.genotype,
+              blood_group=patient.blood_group,
+              gender=patient.gender,
+              contact_information=self.encryption_service.decrypt(
+                  patient.contact_information) if patient.contact_information else None,
+              emergency_contact=self.encryption_service.decrypt(
+                  patient.emergency_contact) if patient.emergency_contact else None,
+              email=self.encryption_service.decrypt(patient.email),
+              phone_number=self.encryption_service.decrypt(
+                  patient.phone_number) if patient.phone_number else None,
+              created_at=patient.created_at,
+              updated_at=patient.updated_at
+          )
+          for patient in patients
       ]
 
       return {
@@ -158,15 +162,19 @@ class PatientService:
           registration_code=patient.registration_code,
           surname=self.encryption_service.decrypt(patient.surname),
           first_name=self.encryption_service.decrypt(patient.first_name),
-          last_name=self.encryption_service.decrypt(patient.last_name) if patient.last_name else None,
+          last_name=self.encryption_service.decrypt(
+              patient.last_name) if patient.last_name else None,
           dob=patient.dob,
           genotype=patient.genotype,
           blood_group=patient.blood_group,
           gender=patient.gender,
-          contact_information=self.encryption_service.decrypt(patient.contact_information) if patient.contact_information else None,
-          emergency_contact=self.encryption_service.decrypt(patient.emergency_contact) if patient.emergency_contact else None,
+          contact_information=self.encryption_service.decrypt(
+              patient.contact_information) if patient.contact_information else None,
+          emergency_contact=self.encryption_service.decrypt(
+              patient.emergency_contact) if patient.emergency_contact else None,
           email=self.encryption_service.decrypt(patient.email),
-          phone_number=self.encryption_service.decrypt(patient.phone_number) if patient.phone_number else None,
+          phone_number=self.encryption_service.decrypt(
+              patient.phone_number) if patient.phone_number else None,
           created_at=patient.created_at,
           updated_at=patient.updated_at
       )

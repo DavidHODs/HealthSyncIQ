@@ -46,6 +46,7 @@ class StaffModel(Base):
   departments: Mapped[List["DepartmentModel"]] = relationship(
       "DepartmentModel",
       secondary="department_memberships",
+      overlaps="staffs",
       lazy="selectin"
   )
 
