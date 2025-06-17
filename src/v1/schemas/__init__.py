@@ -13,7 +13,14 @@ from .clinical_note import (
   ClinicalNoteResponseSchema,
   ClinicalNoteUpdateRequestSchema,
 )
-from .clinical_order import ClinicalOrderSchema
+from .clinical_order import (
+  ClinicalOrderCreateRequestSchema,
+  ClinicalOrderResponseSchema,
+  ClinicalOrderUpdateRequestSchema,
+  ClinicalOrderIdRef,
+  ClinicalOrderOrderedByStaffResponse,
+  ClinicalOrderStaffDepartmentResponse
+)
 from .clinical_order_result import ClinicalOrderResultSchema
 from .department import (
   DepartmentCreateRequestSchema,
@@ -62,7 +69,12 @@ __all__ = [
     "ClinicalNoteCreateRequestSchema",
     "ClinicalNoteResponseSchema",
     "ClinicalNoteUpdateRequestSchema",
-    "ClinicalOrderSchema",
+    "ClinicalOrderCreateRequestSchema",
+    "ClinicalOrderResponseSchema",
+    "ClinicalOrderUpdateRequestSchema",
+    "ClinicalOrderIdRef",
+    "ClinicalOrderOrderedByStaffResponse",
+    "ClinicalOrderStaffDepartmentResponse",
     "ClinicalOrderResultSchema",
     "FileAttachmentSchema",
     "MedicationDispensingSchema",
