@@ -49,7 +49,7 @@ class LaboratoryOrderCreateRequestSchema(BaseModel):
   class Config:
     extra = "forbid"
     json_schema_extra = {
-        "examples":
+        "example":
             {
                 "order": {"id": "00000000-0000-0000-0000-000000000001"},
                 "result_type": "Blood Test",
@@ -73,7 +73,7 @@ class LaboratoryOrderUpdateRequestSchema(BaseModel):
   class Config:
     extra = "forbid"
     json_schema_extra = {
-        "examples":
+        "example":
             {
                 "result_data": {"test_name": "CBC", "hemoglobin": "14.5 g/dL", "status": "Final"},
                 "result_notes": "Updated after re-analysis.",
@@ -102,7 +102,7 @@ class LaboratoryOrderResponseSchema(BaseModel):
   class Config:
     from_attributes = True
     json_schema_extra = {
-        "examples":
+        "example":
             {
                 "id": "e0e0e0e0-e0e0-e0e0-e0e0-e0e0e0e0e0e0",
                 "order": {"id": "00000000-0000-0000-0000-000000000001"},
