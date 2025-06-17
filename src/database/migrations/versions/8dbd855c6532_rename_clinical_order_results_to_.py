@@ -5,11 +5,9 @@ Revises: 32479c586003
 Create Date: 2025-06-17 13:48:58.950687
 
 """
-from typing_extensions import Sequence, Union
-
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
+from typing_extensions import Sequence, Union
 
 # revision identifiers, used by Alembic.
 revision: str = '8dbd855c6532'
@@ -19,16 +17,16 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    """Upgrade schema."""
-    op.execute(sa.text("""
+  """Upgrade schema."""
+  op.execute(sa.text("""
         ALTER TABLE clinical_order_results
         RENAME TO laboratory_orders;
     """))
 
 
 def downgrade() -> None:
-    """Downgrade schema."""
-    op.execute(sa.text("""
+  """Downgrade schema."""
+  op.execute(sa.text("""
         ALTER TABLE laboratory_orders
         RENAME TO clinical_order_results;
     """))

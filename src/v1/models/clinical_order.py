@@ -25,7 +25,8 @@ class ClinicalOrderModel(Base):
       nullable=False
   )
   order_type: Mapped[str] = mapped_column(String(50), nullable=False)
-  order_details: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
+  order_details: Mapped[dict[str, object]
+                        ] = mapped_column(JSONB, nullable=False)
   target_department_id: Mapped[uuid.UUID] = mapped_column(
       UUID(as_uuid=True),
       ForeignKey("departments.id", ondelete="SET NULL"),
@@ -36,8 +37,10 @@ class ClinicalOrderModel(Base):
       ForeignKey("staffs.id", ondelete="CASCADE"),
       nullable=False
   )
-  priority: Mapped[str] = mapped_column(String(50), nullable=False, default='Routine')
-  status: Mapped[str] = mapped_column(String(50), nullable=False, default='Pending')
+  priority: Mapped[str] = mapped_column(
+      String(50), nullable=False, default='Routine')
+  status: Mapped[str] = mapped_column(
+      String(50), nullable=False, default='Pending')
   order_notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
   created_at: Mapped[datetime.datetime] = mapped_column(
       nullable=False,

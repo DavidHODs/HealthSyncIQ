@@ -3,24 +3,24 @@ from uuid import UUID
 
 from sqlalchemy import asc
 from sqlalchemy.orm import Session, selectinload
-from typing_extensions import List, Optional
+from typing_extensions import List
 
 from v1.errors import AppException
 from v1.models import ClinicalOrderModel, StaffModel
 from v1.schemas import (
-    ClinicalOrderCreateRequestSchema,
-    ClinicalOrderUpdateRequestSchema,
-    ClinicalOrderResponseSchema,
-    ClinicalOrderIdRef,
-    ClinicalOrderOrderedByStaffResponse,
-    ClinicalOrderStaffDepartmentResponse,
+  ClinicalOrderCreateRequestSchema,
+  ClinicalOrderIdRef,
+  ClinicalOrderOrderedByStaffResponse,
+  ClinicalOrderResponseSchema,
+  ClinicalOrderStaffDepartmentResponse,
+  ClinicalOrderUpdateRequestSchema,
 )
 from v1.type_defs import (
-    APIResponse,
-    CreateDataResponse,
-    ErrorTypeEnum,
-    JWTTokenPayload,
-    UpdateDataResponse,
+  APIResponse,
+  CreateDataResponse,
+  ErrorTypeEnum,
+  JWTTokenPayload,
+  UpdateDataResponse,
 )
 
 
@@ -72,12 +72,12 @@ class ClinicalOrderService:
 
       for key, value in update_data.items():
         if key == "target_department":
-            if value and "id" in value:
-                setattr(order, "target_department_id", value["id"])
-            elif value is None:
-                setattr(order, "target_department_id", None)
+          if value and "id" in value:
+            setattr(order, "target_department_id", value["id"])
+          elif value is None:
+            setattr(order, "target_department_id", None)
         else:
-            setattr(order, key, value)
+          setattr(order, key, value)
 
       order.ordered_by_id = UUID(auth_payload["id"])
 
@@ -109,43 +109,44 @@ class ClinicalOrderService:
 
       result = []
       for order in orders:
-          if order.ordered_by_id:
-              staff = db.query(StaffModel).options(
-                  selectinload(StaffModel.departments)
-              ).filter(
-                  StaffModel.id == order.ordered_by_id,
-                  StaffModel.deleted_at.is_(None)
-              ).first()
+        if order.ordered_by_id:
+          staff = db.query(StaffModel).options(
+              selectinload(StaffModel.departments)
+          ).filter(
+              StaffModel.id == order.ordered_by_id,
+              StaffModel.deleted_at.is_(None)
+          ).first()
 
-              if staff:
-                  ordered_by_staff = ClinicalOrderOrderedByStaffResponse(
-                      id=staff.id,
-                      title=staff.title,
-                      name=f"{staff.first_name} {staff.surname}",
-                      departments=[
-                          ClinicalOrderStaffDepartmentResponse(
-                              id=dpt.id,
-                              name=dpt.name
-                          )
-                          for dpt in staff.departments
-                      ]
-                  )
+          if staff:
+            ordered_by_staff = ClinicalOrderOrderedByStaffResponse(
+                id=staff.id,
+                title=staff.title,
+                name=f"{staff.first_name} {staff.surname}",
+                departments=[
+                    ClinicalOrderStaffDepartmentResponse(
+                        id=dpt.id,
+                        name=dpt.name
+                    )
+                    for dpt in staff.departments
+                ]
+            )
 
-          result.append(
-              ClinicalOrderResponseSchema(
-                  id=order.id,
-                  encounter=ClinicalOrderIdRef(id=order.encounter_id),
-                  order_type=order.order_type,
-                  order_details=order.order_details,
-                  target_department=ClinicalOrderIdRef(id=order.target_department_id),
-                  ordered_by=ordered_by_staff,
-                  priority=order.priority,
-                  status=order.status,
-                  order_notes=order.order_notes,
-                  created_at=order.created_at,
-                  updated_at=order.updated_at,
-              )
-          )
+        result.append(
+            ClinicalOrderResponseSchema(
+                id=order.id,
+                encounter=ClinicalOrderIdRef(id=order.encounter_id),
+                order_type=order.order_type,
+                order_details=order.order_details,
+                target_department=ClinicalOrderIdRef(
+                    id=order.target_department_id),
+                ordered_by=ordered_by_staff,
+                priority=order.priority,
+                status=order.status,
+                order_notes=order.order_notes,
+                created_at=order.created_at,
+                updated_at=order.updated_at,
+            )
+        )
 
       return {
           "data": result,
@@ -172,26 +173,26 @@ class ClinicalOrderService:
         raise AppException(type=ErrorTypeEnum.NOT_FOUND)
 
       if order.ordered_by_id:
-          staff = db.query(StaffModel).options(
-              selectinload(StaffModel.departments)
-          ).filter(
-              StaffModel.id == order.ordered_by_id,
-              StaffModel.deleted_at.is_(None)
-          ).first()
+        staff = db.query(StaffModel).options(
+            selectinload(StaffModel.departments)
+        ).filter(
+            StaffModel.id == order.ordered_by_id,
+            StaffModel.deleted_at.is_(None)
+        ).first()
 
-          if staff:
-              ordered_by_staff = ClinicalOrderOrderedByStaffResponse(
-                  id=staff.id,
-                  title=staff.title,
-                  name=f"{staff.first_name} {staff.surname}",
-                  departments=[
-                      ClinicalOrderStaffDepartmentResponse(
-                          id=dpt.id,
-                          name=dpt.name
-                      )
-                      for dpt in staff.departments
-                  ]
-              )
+        if staff:
+          ordered_by_staff = ClinicalOrderOrderedByStaffResponse(
+              id=staff.id,
+              title=staff.title,
+              name=f"{staff.first_name} {staff.surname}",
+              departments=[
+                  ClinicalOrderStaffDepartmentResponse(
+                      id=dpt.id,
+                      name=dpt.name
+                  )
+                  for dpt in staff.departments
+              ]
+          )
 
       result = ClinicalOrderResponseSchema(
           id=order.id,
@@ -214,7 +215,8 @@ class ClinicalOrderService:
     except Exception as exc:
       raise AppException.classify_error(exc)
 
-  def delete(self, id: UUID, encounter_id: UUID, db: Session) -> APIResponse[str]:
+  def delete(self, id: UUID, encounter_id: UUID,
+             db: Session) -> APIResponse[str]:
     try:
       order = db.query(ClinicalOrderModel).filter(
           ClinicalOrderModel.id == id,

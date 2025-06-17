@@ -9,8 +9,8 @@ from v1.errors import AppException, ExceptionHandler
 from v1.middlewares import Authenticate
 from v1.schemas import (
   ClinicalOrderCreateRequestSchema,
-  ClinicalOrderUpdateRequestSchema,
   ClinicalOrderResponseSchema,
+  ClinicalOrderUpdateRequestSchema,
 )
 from v1.services import ClinicalOrderService
 from v1.type_defs import (
