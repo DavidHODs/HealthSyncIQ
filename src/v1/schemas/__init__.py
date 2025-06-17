@@ -13,8 +13,14 @@ from .clinical_note import (
   ClinicalNoteResponseSchema,
   ClinicalNoteUpdateRequestSchema,
 )
-from .clinical_order import ClinicalOrderSchema
-from .clinical_order_result import ClinicalOrderResultSchema
+from .clinical_order import (
+  ClinicalOrderCreateRequestSchema,
+  ClinicalOrderIdRef,
+  ClinicalOrderOrderedByStaffResponse,
+  ClinicalOrderResponseSchema,
+  ClinicalOrderStaffDepartmentResponse,
+  ClinicalOrderUpdateRequestSchema,
+)
 from .department import (
   DepartmentCreateRequestSchema,
   DepartmentResponseSchema,
@@ -27,8 +33,13 @@ from .diagnosis import (
   DiagnosisUpdateRequestSchema,
 )
 from .file_attachment import FileAttachmentSchema
-from .medication_dispensing import MedicationDispensingSchema
-from .nursing_task import NursingTaskSchema
+from .laboratory_order import (
+  LaboratoryOrderCreateRequestSchema,
+  LaboratoryOrderResponseSchema,
+  LaboratoryOrderUpdateRequestSchema,
+  LaboratoryStaffDepartmentResponse,
+  LaboratoryStaffResponse,
+)
 from .patient import (
   PatientCreateRequestSchema,
   PatientResponseSchema,
@@ -62,11 +73,19 @@ __all__ = [
     "ClinicalNoteCreateRequestSchema",
     "ClinicalNoteResponseSchema",
     "ClinicalNoteUpdateRequestSchema",
-    "ClinicalOrderSchema",
-    "ClinicalOrderResultSchema",
+    "ClinicalOrderCreateRequestSchema",
+    "ClinicalOrderResponseSchema",
+    "ClinicalOrderUpdateRequestSchema",
+    "ClinicalOrderIdRef",
+    "ClinicalOrderOrderedByStaffResponse",
+    "ClinicalOrderStaffDepartmentResponse",
+    "LaboratoryOrderCreateRequestSchema",
+    "LaboratoryOrderResponseSchema",
+    "LaboratoryOrderUpdateRequestSchema",
+    "LaboratoryStaffDepartmentResponse",
+    "LaboratoryStaffResponse",
     "FileAttachmentSchema",
     "MedicationDispensingSchema",
-    "NursingTaskSchema",
     "LoginRequestSchema",
     "LoginResponseSchema",
     "LoginStaffResponseSchema"
