@@ -4,10 +4,7 @@ from v1.controllers import HealthHistorySummarizationController
 from v1.docs import get_responses
 from v1.middlewares import Authenticate
 from v1.schemas import HealthHistorySummarySchema
-from v1.type_defs import (
-  BaseResponse,
-  StaffRole
-)
+from v1.type_defs import BaseResponse, StaffRole
 
 
 class HealthHistorySummarizationRoute:

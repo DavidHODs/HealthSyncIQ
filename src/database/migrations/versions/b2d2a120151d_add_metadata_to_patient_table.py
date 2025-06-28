@@ -5,9 +5,8 @@ Revises: 70c9f048bb6b
 Create Date: 2025-06-28 22:32:00.899093
 """
 
-from typing_extensions import Sequence, Union
 from alembic import op
-import sqlalchemy as sa
+from typing_extensions import Sequence, Union
 
 # revision identifiers, used by Alembic.
 revision: str = 'b2d2a120151d'
@@ -17,16 +16,16 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    """Upgrade schema."""
-    op.execute("""
+  """Upgrade schema."""
+  op.execute("""
         ALTER TABLE patients
         ADD COLUMN meta JSONB NOT NULL DEFAULT '{}';
     """)
 
 
 def downgrade() -> None:
-    """Downgrade schema."""
-    op.execute("""
+  """Downgrade schema."""
+  op.execute("""
         ALTER TABLE patients
         DROP COLUMN meta;
     """)

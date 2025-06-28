@@ -5,10 +5,10 @@ from .clinical_note import ClinicalNoteController
 from .clinical_order import ClinicalOrderController
 from .department import DepartmentController
 from .diagnosis import DiagnosisController
+from .health_history import HealthHistorySummarizationController
 from .laboratory_order import LaboratoryOrderController
 from .patient import PatientController
 from .staff import StaffController
-from .health_history import HealthHistorySummarizationController
 
 __all__ = [
     "AppController",

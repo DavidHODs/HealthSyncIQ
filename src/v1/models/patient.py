@@ -1,10 +1,9 @@
 import datetime
 import uuid
-from typing import Optional, Any
+from typing import Any, Optional
 
 from sqlalchemy import Date, String, func
-from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 
@@ -30,8 +29,8 @@ class PatientModel(Base):
   email: Mapped[str] = mapped_column(String, nullable=False)
   phone_number: Mapped[str | None] = mapped_column(String, nullable=True)
   meta: Mapped[dict[str, Any]] = mapped_column(
-        JSONB, nullable=False, server_default='{}'
-    )
+      JSONB, nullable=False, server_default='{}'
+  )
   created_at: Mapped[datetime.datetime] = mapped_column(
       TIMESTAMP(timezone=True),
       server_default=func.now(),

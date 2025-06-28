@@ -8,10 +8,10 @@ from .clinical_note import ClinicalNoteRoute
 from .clinical_order import ClinicalOrderRoute
 from .department import DepartmentRoute
 from .diagnosis import DiagnosisRoute
+from .health_history import HealthHistorySummarizationRoute
 from .laboratory_order import LaboratoryOrderRoute
 from .patient import PatientRoute
 from .staff import StaffRoute
-from .health_history import HealthHistorySummarizationRoute
 
 app_routes: APIRouter = AppRoute().router
 auth_routes: APIRouter = AuthRoute().router

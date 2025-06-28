@@ -33,6 +33,11 @@ from .diagnosis import (
   DiagnosisUpdateRequestSchema,
 )
 from .file_attachment import FileAttachmentSchema
+from .health_history import (
+  EncounterSummarySchema,
+  HealthHistorySummarySchema,
+  PatientInfoSchema,
+)
 from .laboratory_order import (
   LaboratoryOrderCreateRequestSchema,
   LaboratoryOrderResponseSchema,
@@ -50,11 +55,6 @@ from .staff import (
   StaffDepartmentResponseSchema,
   StaffResponseSchema,
   StaffUpdateRequestSchema,
-)
-from .health_history import (
-  EncounterSummarySchema,
-  PatientInfoSchema,
-  HealthHistorySummarySchema
 )
 
 __all__ = [
