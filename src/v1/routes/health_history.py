@@ -19,7 +19,7 @@ class HealthHistorySummarizationRoute:
   def _register_routes(self) -> None:
     self.router.add_api_route(
         path="/health-history-summarization/{patient_id}",
-        endpoint=self.controller.getOne,
+        endpoint=self.controller.build_summary,
         methods=["GET"],
         description="Build Health History Summary For a Patient",
         dependencies=[Depends(Authenticate([StaffRole.DOCTOR]))],

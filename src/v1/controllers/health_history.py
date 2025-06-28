@@ -20,7 +20,7 @@ class HealthHistorySummarizationController:
   def __init__(self) -> None:
     self.health_history_summarization_service: HealthHistorySummarizationService = HealthHistorySummarizationService()
 
-  def getOne(
+  def build_summary(
       self,
       patient_id: UUID,
       db: Session = Depends(get_db),
