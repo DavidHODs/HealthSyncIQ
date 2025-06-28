@@ -30,7 +30,7 @@ class PatientController:
       self,
       data: PatientCreateRequestSchema,
       db: Session = Depends(get_db),
-      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
+      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN, StaffRole.DOCTOR]))
   ) -> APIResponse[CreateDataResponse] | Response:
     try:
       return self.patient_service.create(data, db)
@@ -42,7 +42,7 @@ class PatientController:
       id: UUID,
       data: PatientUpdateRequestSchema,
       db: Session = Depends(get_db),
-      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
+      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN, StaffRole.DOCTOR]))
   ) -> APIResponse[UpdateDataResponse] | Response:
     try:
       return self.patient_service.update(id, data, db)
@@ -54,7 +54,7 @@ class PatientController:
       limit: int = 15,
       page: int = 1,
       db: Session = Depends(get_db),
-      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
+      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN, StaffRole.DOCTOR]))
   ) -> APIResponse[List[PatientResponseSchema]] | Response:
     try:
       offset: int = (page - 1) * limit
@@ -67,7 +67,7 @@ class PatientController:
       self,
       id: UUID,
       db: Session = Depends(get_db),
-      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
+      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN, StaffRole.DOCTOR]))
   ) -> APIResponse[PatientResponseSchema] | Response:
     try:
       return self.patient_service.getOne(id, db)
@@ -78,7 +78,7 @@ class PatientController:
       self,
       id: UUID,
       db: Session = Depends(get_db),
-      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
+      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN, StaffRole.DOCTOR]))
   ) -> APIResponse[str] | Response:
     try:
       return self.patient_service.delete(id, db)
@@ -89,7 +89,7 @@ class PatientController:
       self,
       id: UUID,
       db: Session = Depends(get_db),
-      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN]))
+      auth_payload: JWTTokenPayload = Depends(Authenticate([StaffRole.ADMIN, StaffRole.DOCTOR]))
   ) -> APIResponse[str] | Response:
     try:
       return self.patient_service.restore(id, db)
