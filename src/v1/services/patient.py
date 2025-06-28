@@ -128,6 +128,7 @@ class PatientService:
               email=self.encryption_service.decrypt(patient.email),
               phone_number=self.encryption_service.decrypt(
                   patient.phone_number) if patient.phone_number else None,
+              meta=patient.meta,
               created_at=patient.created_at,
               updated_at=patient.updated_at
           )
@@ -175,6 +176,7 @@ class PatientService:
           email=self.encryption_service.decrypt(patient.email),
           phone_number=self.encryption_service.decrypt(
               patient.phone_number) if patient.phone_number else None,
+          meta=patient.meta,
           created_at=patient.created_at,
           updated_at=patient.updated_at
       )

@@ -8,6 +8,7 @@ from .clinical_note import ClinicalNoteRoute
 from .clinical_order import ClinicalOrderRoute
 from .department import DepartmentRoute
 from .diagnosis import DiagnosisRoute
+from .health_history import HealthHistorySummarizationRoute
 from .laboratory_order import LaboratoryOrderRoute
 from .patient import PatientRoute
 from .staff import StaffRoute
@@ -22,6 +23,7 @@ diagnosis_routes: APIRouter = DiagnosisRoute().router
 clinical_note_routes: APIRouter = ClinicalNoteRoute().router
 clinical_Order_routes: APIRouter = ClinicalOrderRoute().router
 laboratory_order_routes: APIRouter = LaboratoryOrderRoute().router
+health_history_summarization_routes: APIRouter = HealthHistorySummarizationRoute().router
 
 all_routes: Sequence[Tuple[APIRouter, List[str]]] = [
     (auth_routes, ["Auth"]),
@@ -31,6 +33,7 @@ all_routes: Sequence[Tuple[APIRouter, List[str]]] = [
     (department_routes, ["Department"]),
     (diagnosis_routes, ["Diagnosis"]),
     (app_routes, ["Health"]),
+    (health_history_summarization_routes, ["Health History Summarization"]),
     (laboratory_order_routes, ["Laboratory Order"]),
     (staff_routes, ["Staff"]),
     (patient_routes, ["Patient"])

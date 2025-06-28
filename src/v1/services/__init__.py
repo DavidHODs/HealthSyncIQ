@@ -8,6 +8,7 @@ from .diagnosis import DiagnosisService
 from .general.encryption import EncryptionService
 from .general.jwt import JWTService, jwt_service_instance
 from .general.redis import RedisService, redis_service_instance
+from .health_history import HealthHistorySummarizationService
 from .laboratory_order import LaboratoryOrderService
 from .patient import PatientService
 from .staff import StaffService
@@ -27,5 +28,6 @@ __all__ = [
     "DiagnosisService",
     "ClinicalNoteService",
     "ClinicalOrderService",
-    "LaboratoryOrderService"
+    "LaboratoryOrderService",
+    "HealthHistorySummarizationService"
 ]

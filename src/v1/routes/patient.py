@@ -27,7 +27,8 @@ class PatientRoute:
         endpoint=self.controller.create,
         methods=["POST"],
         description="Create a new Patient",
-        dependencies=[Depends(Authenticate([StaffRole.ADMIN]))],
+        dependencies=[Depends(Authenticate(
+            [StaffRole.ADMIN, StaffRole.DOCTOR]))],
         status_code=201,
         responses=get_responses(201, 400, 401, 500),
         response_model=BaseResponse[CreateDataResponse]
@@ -38,7 +39,8 @@ class PatientRoute:
         endpoint=self.controller.update,
         methods=["PUT"],
         description="Update an existing Patient",
-        dependencies=[Depends(Authenticate([StaffRole.ADMIN]))],
+        dependencies=[Depends(Authenticate(
+            [StaffRole.ADMIN, StaffRole.DOCTOR]))],
         responses=get_responses(200, 400, 401, 404, 500),
         response_model=BaseResponse[UpdateDataResponse]
     )
@@ -48,7 +50,8 @@ class PatientRoute:
         endpoint=self.controller.getAll,
         methods=["GET"],
         description="Get all Patients",
-        dependencies=[Depends(Authenticate([StaffRole.ADMIN]))],
+        dependencies=[Depends(Authenticate(
+            [StaffRole.ADMIN, StaffRole.DOCTOR]))],
         responses=get_responses(200, 401, 500),
         response_model=APIResponse[List[PatientResponseSchema]]
     )
@@ -58,7 +61,8 @@ class PatientRoute:
         endpoint=self.controller.getOne,
         methods=["GET"],
         description="Get a single Patient by ID",
-        dependencies=[Depends(Authenticate([StaffRole.ADMIN]))],
+        dependencies=[Depends(Authenticate(
+            [StaffRole.ADMIN, StaffRole.DOCTOR]))],
         responses=get_responses(200, 401, 404, 500),
         response_model=BaseResponse[PatientResponseSchema]
     )
@@ -68,7 +72,8 @@ class PatientRoute:
         endpoint=self.controller.delete,
         methods=["DELETE"],
         description="Soft delete a Patient by ID",
-        dependencies=[Depends(Authenticate([StaffRole.ADMIN]))],
+        dependencies=[Depends(Authenticate(
+            [StaffRole.ADMIN, StaffRole.DOCTOR]))],
         responses=get_responses(200, 401, 404, 500),
         response_model=BaseResponse[str]
     )
@@ -78,7 +83,8 @@ class PatientRoute:
         endpoint=self.controller.restore,
         methods=["PATCH"],
         description="Restore a soft-deleted Patient by ID",
-        dependencies=[Depends(Authenticate([StaffRole.ADMIN]))],
+        dependencies=[Depends(Authenticate(
+            [StaffRole.ADMIN, StaffRole.DOCTOR]))],
         responses=get_responses(200, 401, 404, 500),
         response_model=BaseResponse[str]
     )
