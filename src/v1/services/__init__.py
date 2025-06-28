@@ -11,6 +11,7 @@ from .general.redis import RedisService, redis_service_instance
 from .laboratory_order import LaboratoryOrderService
 from .patient import PatientService
 from .staff import StaffService
+from .health_history import HealthHistorySummarizationService
 
 __all__ = [
     "AppService",
@@ -27,5 +28,6 @@ __all__ = [
     "DiagnosisService",
     "ClinicalNoteService",
     "ClinicalOrderService",
-    "LaboratoryOrderService"
+    "LaboratoryOrderService",
+    "HealthHistorySummarizationService"
 ]

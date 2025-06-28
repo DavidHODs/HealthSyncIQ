@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing_extensions import List, Optional, Dict, Any
-from datetime import date
+from datetime import date, datetime
 
 
 class PatientInfoSchema(BaseModel):
@@ -11,12 +11,12 @@ class PatientInfoSchema(BaseModel):
   meta: Optional[Dict[str, Any]] = {}
 
 class EncounterSummarySchema(BaseModel):
-  date: date
+  date: datetime
   type: str
   doctor: Optional[str]
   complaint: Optional[str]
   diagnosis: Optional[str]
-  labs: Optional[Dict[str, Dict[str, str]]] = None 
+  labs: Optional[List[Dict[str, Any]]] = []
 
 
 class HealthHistorySummarySchema(BaseModel):
