@@ -51,6 +51,11 @@ from .staff import (
   StaffResponseSchema,
   StaffUpdateRequestSchema,
 )
+from .health_history import (
+  EncounterSummarySchema,
+  PatientInfoSchema,
+  HealthHistorySummarySchema
+)
 
 __all__ = [
     "StaffCreateRequestSchema",
@@ -88,5 +93,8 @@ __all__ = [
     "MedicationDispensingSchema",
     "LoginRequestSchema",
     "LoginResponseSchema",
-    "LoginStaffResponseSchema"
+    "LoginStaffResponseSchema",
+    "EncounterSummarySchema",
+    "PatientInfoSchema",
+    "HealthHistorySummarySchema"
 ]
