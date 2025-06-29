@@ -5,7 +5,10 @@ from typing_extensions import List
 from v1.controllers import PatientController
 from v1.docs import get_responses
 from v1.middlewares import Authenticate
-from v1.schemas import PatientResponseSchema
+from v1.schemas import (
+    PatientResponseSchema,
+    PatientSearchResponseSchema
+)
 from v1.type_defs import (
   APIResponse,
   BaseResponse,
@@ -40,7 +43,7 @@ class PatientRoute:
         methods=["PUT"],
         description="Update an existing Patient",
         dependencies=[Depends(Authenticate(
-            [StaffRole.ADMIN, StaffRole.DOCTOR]))],
+            [StaffRole.ADMIN]))],
         responses=get_responses(200, 400, 401, 404, 500),
         response_model=BaseResponse[UpdateDataResponse]
     )
@@ -87,4 +90,15 @@ class PatientRoute:
             [StaffRole.ADMIN, StaffRole.DOCTOR]))],
         responses=get_responses(200, 401, 404, 500),
         response_model=BaseResponse[str]
+    )
+    
+    self.router.add_api_route(
+        path="/patients/{registration_code}/search-by-registration-code",
+        endpoint=self.controller.search_by_registration_code,
+        methods=["GET"],
+        description="Search for patients using registration code",
+        dependencies=[Depends(Authenticate(
+            [StaffRole.DOCTOR, StaffRole.TECHNOLOGIST, StaffRole.ADMIN, StaffRole.PHARMACIST]))],
+        responses=get_responses(200, 401, 404, 500),
+        response_model=BaseResponse[List[PatientSearchResponseSchema]]
     )

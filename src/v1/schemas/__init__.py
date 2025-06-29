@@ -49,6 +49,7 @@ from .patient import (
   PatientCreateRequestSchema,
   PatientResponseSchema,
   PatientUpdateRequestSchema,
+  PatientSearchResponseSchema
 )
 from .staff import (
   StaffCreateRequestSchema,
@@ -96,5 +97,6 @@ __all__ = [
     "LoginStaffResponseSchema",
     "EncounterSummarySchema",
     "PatientInfoSchema",
-    "HealthHistorySummarySchema"
+    "HealthHistorySummarySchema",
+    "PatientSearchResponseSchema"
 ]

@@ -17,7 +17,7 @@ class PatientCreateRequestSchema(BaseModel):
   emergency_contact: Optional[str] = None
   email: EmailStr
   phone_number: Optional[str] = None
-  meta: Dict[str, Any]
+  meta: Optional[Dict[str, Any]] = None
 
   class Config:
     extra = "forbid"
@@ -121,3 +121,23 @@ class PatientResponseSchema(BaseModel):
         }
     }
     from_attributes = True
+
+
+class PatientSearchResponseSchema(BaseModel):
+    id: uuid.UUID
+    registration_code: str
+    first_name: str
+    last_name: Optional[str]
+    surname: str
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "id": "123e4567-e89b-12d3-a456-426614174000",
+                "registration_code": "HS123456",
+                "first_name": "John",
+                "last_name": "Smith",
+                "surname": "Doe"
+            }
+        }
+        from_attributes = True
