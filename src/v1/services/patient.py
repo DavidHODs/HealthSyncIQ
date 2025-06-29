@@ -12,6 +12,7 @@ from v1.schemas import (
   PatientCreateRequestSchema,
   PatientResponseSchema,
   PatientUpdateRequestSchema,
+  PatientSearchResponseSchema
 )
 from v1.type_defs import (
   APIResponse,
@@ -33,7 +34,7 @@ class PatientService:
     None
 
   def create(self, data: PatientCreateRequestSchema,
-             db: Session) -> APIResponse[CreateDataResponse]:
+         db: Session) -> APIResponse[CreateDataResponse]:
     try:
       patient = PatientModel(**data.model_dump())
 
@@ -41,22 +42,25 @@ class PatientService:
 
       for field in self.SENSITIVE_FIELDS:
         setattr(
-            patient,
-            field,
-            self.encryption_service.encrypt(
-                getattr(
-                    patient,
-                    field)))
+          patient,
+          field,
+          self.encryption_service.encrypt(
+            getattr(
+              patient,
+              field)))
+
+      if getattr(patient, "meta", None) is None:
+        delattr(patient, "meta")
 
       db.add(patient)
       db.commit()
       db.refresh(patient)
 
       return {
-          "data": {
-              "id": patient.id,
-              "message": f"Patient {self.encryption_service.decrypt(patient.first_name)} {self.encryption_service.decrypt(patient.last_name)} created successfully"
-          }
+        "data": {
+          "id": patient.id,
+          "message": f"Patient {self.encryption_service.decrypt(patient.first_name)} {self.encryption_service.decrypt(patient.last_name)} created successfully"
+        }
       }
 
     except Exception as exc:
@@ -229,3 +233,29 @@ class PatientService:
 
     except Exception as exc:
       raise AppException.classify_error(exc)
+    
+  def search_by_registration_code(self, registration_code: str, db: Session) -> APIResponse[List[PatientSearchResponseSchema]]:
+    try:
+        patients = db.query(PatientModel).filter(
+            PatientModel.registration_code.ilike(f"%{registration_code}%"),
+            PatientModel.deleted_at.is_(None)
+        ).order_by(PatientModel.created_at.desc()).limit(10).all()
+
+        result = []
+
+        for patient in patients:
+            try:
+                result.append(PatientSearchResponseSchema(
+                    id=patient.id,
+                    registration_code=patient.registration_code,
+                    surname=self.encryption_service.decrypt(patient.surname),
+                    first_name=self.encryption_service.decrypt(patient.first_name),
+                    last_name=self.encryption_service.decrypt(patient.last_name) if patient.last_name else None
+                ))
+            except Exception:
+                continue  
+
+        return {"data": result}
+
+    except Exception as exc:
+        raise AppException.classify_error(exc)

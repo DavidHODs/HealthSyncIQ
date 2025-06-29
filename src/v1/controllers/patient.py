@@ -11,6 +11,7 @@ from v1.schemas import (
   PatientCreateRequestSchema,
   PatientResponseSchema,
   PatientUpdateRequestSchema,
+  PatientSearchResponseSchema
 )
 from v1.services import PatientService
 from v1.type_defs import (
@@ -101,3 +102,15 @@ class PatientController:
       return self.patient_service.restore(id, db)
     except AppException as exc:
       return ExceptionHandler.handle_error(exc)
+    
+  def search_by_registration_code(
+        self,
+        registration_code: str,
+        db: Session = Depends(get_db),
+        auth_payload: JWTTokenPayload = Depends(
+            Authenticate([StaffRole.DOCTOR, StaffRole.TECHNOLOGIST, StaffRole.ADMIN, StaffRole.PHARMACIST]))
+    ) -> APIResponse[List[PatientSearchResponseSchema]] | Response:
+        try:
+            return self.patient_service.search_by_registration_code(registration_code, db)
+        except AppException as exc:
+            return ExceptionHandler.handle_error(exc)

@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
 
 import uvicorn
 from fastapi import FastAPI, Security
@@ -55,6 +56,14 @@ app: FastAPI = FastAPI(
     title="HealthSyncIQ API",
     security=[Security(security_scheme)],
     version="1.0.0")
+
+app.add_middleware(
+  CORSMiddleware,
+  allow_origins=["*"],
+  allow_credentials=True,
+  allow_methods=["*"], 
+  allow_headers=["*"], 
+)
 
 for router, tags in all_routes:
   app.include_router(router, prefix="/api/v1", tags=list(tags))
