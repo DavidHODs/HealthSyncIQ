@@ -31,7 +31,8 @@ class PatientRoute:
         methods=["POST"],
         description="Create a new Patient",
         dependencies=[Depends(Authenticate(
-            [StaffRole.DOCTOR]))],
+            [StaffRole.DOCTOR, StaffRole.ADMIN
+             ]))],
         status_code=201,
         responses=get_responses(201, 400, 401, 500),
         response_model=BaseResponse[CreateDataResponse]

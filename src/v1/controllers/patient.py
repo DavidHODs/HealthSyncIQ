@@ -32,7 +32,7 @@ class PatientController:
       data: PatientCreateRequestSchema,
       db: Session = Depends(get_db),
       auth_payload: JWTTokenPayload = Depends(
-          Authenticate([StaffRole.ADMIN]))
+          Authenticate([StaffRole.ADMIN, StaffRole.DOCTOR]))
   ) -> APIResponse[CreateDataResponse] | Response:
     try:
       return self.patient_service.create(data, db)
