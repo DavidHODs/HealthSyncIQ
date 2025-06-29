@@ -31,7 +31,7 @@ class PatientRoute:
         methods=["POST"],
         description="Create a new Patient",
         dependencies=[Depends(Authenticate(
-            [StaffRole.ADMIN, StaffRole.DOCTOR]))],
+            [StaffRole.DOCTOR]))],
         status_code=201,
         responses=get_responses(201, 400, 401, 500),
         response_model=BaseResponse[CreateDataResponse]
@@ -43,7 +43,7 @@ class PatientRoute:
         methods=["PUT"],
         description="Update an existing Patient",
         dependencies=[Depends(Authenticate(
-            [StaffRole.ADMIN]))],
+            [StaffRole.ADMIN, StaffRole.DOCTOR]))],
         responses=get_responses(200, 400, 401, 404, 500),
         response_model=BaseResponse[UpdateDataResponse]
     )
