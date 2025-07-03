@@ -1,5 +1,5 @@
 from .auth import StaffRole
-from .jwt import JWTTokenPayload
+from .jwt import JWTTokenPayload, JWTAccessTokenPayload, JWTAccessTokenPayloadResponse
 from .kwargs import UvicornKwargs
 from .response import (
   APIResponse,
@@ -23,5 +23,7 @@ __all__ = [
     "CreateDataResponse",
     "UpdateDataResponse",
     "JWTTokenPayload",
-    "StaffRole"
+    "StaffRole",
+    "JWTAccessTokenPayload",
+    "JWTAccessTokenPayloadResponse"
 ]

@@ -46,7 +46,7 @@ class StaffService:
           dpt.model_dump() for dpt in data.departments]
       
       email_service = EmailService()
-      html_template = email_service.load_html_template("src/templates/account_password.html")
+      html_template = email_service.load_html_template("src/v1/templates/account_password.html")
       html = html_template.format(name=f"{staff_data['title']} {staff_data['surname']}", password=random_password)
       email_service.send_html_email(staff_data["email"], "Welcome to HealthSyncIQ", html);
 
@@ -71,7 +71,7 @@ class StaffService:
       return {
           "data": {
               "id": staff.id,
-              "message": f"Staff {staff.title} {staff.surname} {staff.first_name} created successfully"
+              "message": f"Staff {staff.title} {staff.surname} {staff.first_name} created successfully Check email for your password"
           }
       }
 

@@ -23,7 +23,7 @@ class Authenticate:
     jwt_service = jwt_service_instance()
 
     try:
-      payload: JWTTokenPayload = jwt_service.decode_token(token)
+      payload: JWTTokenPayload = jwt_service.decode_auth_token(token)
 
       if payload.get("role") not in {role.value for role in self.roles}:
         raise HTTPException(
@@ -44,7 +44,7 @@ class Authenticate:
               detail="Invalid authentication credentials"
           )
 
-        new_token = jwt_service.create_token(id=staff.id, role=staff.role)
+        new_token = jwt_service.create_auth_token(id=staff.id, role=staff.role)
         redis_auth_key = f"auths:{staff.id}"
         redis_service.set(redis_auth_key, new_token)
 
