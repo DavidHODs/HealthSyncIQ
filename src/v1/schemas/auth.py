@@ -99,3 +99,13 @@ class ChangePasswordRequestSchema(BaseModel):
         "confirm_password": "NewSecurePassword456!"
       }
     }
+    
+class ForgotPasswordRequestSchema(BaseModel):
+  email: EmailStr
+
+  class Config:
+    json_schema_extra = {
+      "example": {
+        "email": "user@example.com",
+      }
+    }

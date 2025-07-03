@@ -4,7 +4,8 @@ from .auth import (
   LoginStaffResponseSchema,
   JWTAccessTokenPayloadResponseSchema,
   LoginRequestSchema,
-  ChangePasswordRequestSchema
+  ChangePasswordRequestSchema,
+  ForgotPasswordRequestSchema
 )
 from .clinical_encounter import (
   ClinicalEncounterCreateRequestSchema,
@@ -104,5 +105,6 @@ __all__ = [
     "PatientSearchResponseSchema",
     "JWTAccessTokenPayloadResponseSchema",
     "LoginRequestSchema",
-    "ChangePasswordRequestSchema"
+    "ChangePasswordRequestSchema",
+    "ForgotPasswordRequestSchema"
 ]

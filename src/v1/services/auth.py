@@ -1,7 +1,8 @@
 
+import random
+import string
 import bcrypt
 from sqlalchemy.orm import Session
-import uuid
 
 from v1.errors import AppException
 from v1.models import StaffModel
@@ -11,7 +12,8 @@ from v1.schemas import (
   LoginStaffResponseSchema,
   JWTAccessTokenPayloadResponseSchema,
   AccessRequestCodeSchema,
-  ChangePasswordRequestSchema
+  ChangePasswordRequestSchema,
+  ForgotPasswordRequestSchema
 )
 from v1.services.general.email import EmailService
 from v1.type_defs import APIResponse, ErrorTypeEnum, JWTAccessTokenPayload
@@ -40,7 +42,7 @@ class AuthService:
             detail="Invalid email or password"
         )
 
-      if not self._verify_password(access_code_data.password, staff.password):
+      if not self._verify_password_(access_code_data.password, staff.password):
         raise AppException(
             type=ErrorTypeEnum.UNAUTHORIZED,
             detail="Invalid email or password"
@@ -129,7 +131,7 @@ class AuthService:
               detail="Invalid email or password"
           )
 
-      if not self._verify_password(change_password_data.old_password, staff.password):
+      if not self._verify_password_(change_password_data.old_password, staff.password):
           raise AppException(
               type=ErrorTypeEnum.UNAUTHORIZED,
               detail="Invalid email or password"
@@ -169,10 +171,66 @@ class AuthService:
     except Exception as exc:
       db.rollback()
       raise AppException.classify_error(exc)
+    
+  def forgot_password(self, forgot_password_data: ForgotPasswordRequestSchema,
+             db: Session) -> APIResponse[str]:
+    try:
+      staff = db.query(StaffModel).filter(
+          StaffModel.email == forgot_password_data.email,
+          StaffModel.deleted_at.is_(None),
+          StaffModel.is_active == True
+      ).first()
+      
+      if not staff:
+          raise AppException(
+              type=ErrorTypeEnum.UNAUTHORIZED,
+              detail="Invalid email"
+          )
+      
+      random_password = self._generate_password_()
+      hashed_password = bcrypt.hashpw(
+          random_password.encode("utf-8"),
+          bcrypt.gensalt()).decode("utf-8")
+      
+      email_service = EmailService()
+      html_template = email_service.load_html_template("src/v1/templates/password_reset.html")
+      html = html_template.format(name=f"{staff.title} {staff.surname}", password=random_password)
+      email_service.send_html_email(staff.email, "Password Reset", html);
 
+      staff.password = hashed_password
+      db.commit()
 
-  def _verify_password(self, plain_password: str, hashed_password: str) -> bool:
+      return {
+          "data": "Check your email for new password"
+      }
+
+    except Exception as exc:
+      raise AppException.classify_error(exc)
+
+  def _verify_password_(self, plain_password: str, hashed_password: str) -> bool:
     plain_password_bytes: bytes = plain_password.encode("utf-8")
     hashed_password_bytes: bytes = hashed_password.encode("utf-8")
 
     return bcrypt.checkpw(plain_password_bytes, hashed_password_bytes)
+  
+  def _generate_password_(self, length: int = 8) -> str:
+    symbols = "!@#$%&*"
+
+    required = [
+        random.choice(string.ascii_uppercase),
+        random.choice(string.ascii_lowercase),
+        random.choice(string.digits),
+        random.choice(symbols)
+    ]
+
+    safe_chars = (
+        string.ascii_uppercase +
+        string.ascii_lowercase +
+        string.digits +
+        symbols
+    )
+
+    remaining = random.choices(safe_chars, k=length - len(required))
+    all_chars = required + remaining
+    random.shuffle(all_chars)
+    return ''.join(all_chars)
