@@ -10,13 +10,15 @@ from v1.schemas import (
   LoginResponseSchema,
   LoginStaffResponseSchema,
   JWTAccessTokenPayloadResponseSchema,
-  AccessRequestCodeSchema
+  AccessRequestCodeSchema,
+  ChangePasswordRequestSchema
 )
 from v1.services.general.email import EmailService
 from v1.type_defs import APIResponse, ErrorTypeEnum, JWTAccessTokenPayload
 
 from .general.jwt import jwt_service_instance
 from .general.redis import redis_service_instance
+import re
 
 
 class AuthService:
@@ -112,6 +114,62 @@ class AuthService:
 
     except Exception as exc:
       raise AppException.classify_error(exc)
+
+  def change_password(self, change_password_data: ChangePasswordRequestSchema, db: Session) -> APIResponse[str]:
+    try:
+      staff = db.query(StaffModel).filter(
+          StaffModel.email == change_password_data.email,
+          StaffModel.deleted_at.is_(None),
+          StaffModel.is_active == True
+      ).first()
+
+      if not staff:
+          raise AppException(
+              type=ErrorTypeEnum.UNAUTHORIZED,
+              detail="Invalid email or password"
+          )
+
+      if not self._verify_password(change_password_data.old_password, staff.password):
+          raise AppException(
+              type=ErrorTypeEnum.UNAUTHORIZED,
+              detail="Invalid email or password"
+          )
+
+      if change_password_data.new_password != change_password_data.confirm_password:
+        raise AppException(
+          type=ErrorTypeEnum.VALIDATION_ERROR,
+          detail="New password and confirmation do not match"
+        )
+
+      password = change_password_data.new_password
+      if (
+        len(password) < 8 or
+        not re.search(r"[A-Z]", password) or
+        not re.search(r"[a-z]", password) or
+        not re.search(r"\d", password) or
+        not re.search(r"[!@#$%&*]", password)
+      ):
+        raise AppException(
+          type=ErrorTypeEnum.VALIDATION_ERROR,
+          detail="Password must be at least 8 characters and include uppercase, lowercase, digit, and symbol (!@#$%&*)"
+        )
+
+      hashed_password = bcrypt.hashpw(
+          change_password_data.new_password.encode("utf-8"),
+          bcrypt.gensalt()
+      ).decode("utf-8")
+
+      staff.password = hashed_password
+      db.commit()
+
+      return {
+          "data": "Password changed successfully"
+      }
+
+    except Exception as exc:
+      db.rollback()
+      raise AppException.classify_error(exc)
+
 
   def _verify_password(self, plain_password: str, hashed_password: str) -> bool:
     plain_password_bytes: bytes = plain_password.encode("utf-8")

@@ -83,3 +83,19 @@ class LoginResponseSchema(BaseModel):
     }
 
     from_attributes = True
+
+class ChangePasswordRequestSchema(BaseModel):
+  email: EmailStr
+  old_password: str
+  new_password: str
+  confirm_password: str
+
+  class Config:
+    json_schema_extra = {
+      "example": {
+        "email": "user@example.com",
+        "old_password": "OldPassword123!",
+        "new_password": "NewSecurePassword456!",
+        "confirm_password": "NewSecurePassword456!"
+      }
+    }

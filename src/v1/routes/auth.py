@@ -2,7 +2,11 @@ from fastapi import APIRouter
 
 from v1.controllers import AuthController
 from v1.docs import get_responses
-from v1.schemas import LoginResponseSchema, JWTAccessTokenPayloadResponseSchema
+from v1.schemas import (
+  LoginResponseSchema, 
+  JWTAccessTokenPayloadResponseSchema, 
+  ChangePasswordRequestSchema
+)
 from v1.type_defs import BaseResponse
 
 
@@ -29,4 +33,13 @@ class AuthRoute:
         description="Auth Login Endpoint",
         responses=get_responses(200, 401, 500),
         response_model=BaseResponse[LoginResponseSchema]
+    )
+    
+    self.router.add_api_route(
+        path="/auth/change-password",
+        endpoint=self.controller.change_password,
+        methods=["POST"],
+        description="Auth Change Password Endpoint",
+        responses=get_responses(200, 401, 500),
+        response_model=BaseResponse[str]
     )
