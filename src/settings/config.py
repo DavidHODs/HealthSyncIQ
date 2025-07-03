@@ -33,6 +33,12 @@ class Config:
   SECONDS_IN_A_DAY: int = 86400
 
   ENCRYPTION_KEY: str = cast(str, os.getenv("ENCRYPTION_KEY"))
+  
+  SMTP_HOST: str = cast(str, os.getenv("SMTP_HOST"))
+  SMTP_PORT: int = int(os.getenv("SMTP_PORT", 465))
+  SMTP_USERNAME: str = cast(str, os.getenv("SMTP_USERNAME"))
+  SMTP_PASSWORD: str = cast(str, os.getenv("SMTP_PASSWORD"))
+  SMTP_FROM_EMAIL: str = cast(str, os.getenv("SMTP_FROM_EMAIL"))
 
   REQUIRED_VARIABLES = [
       "PORT",
@@ -46,7 +52,12 @@ class Config:
       "JWT_SECRET_KEY",
       "JWT_ALGORITHM",
       "JWT_TOKEN_AND_REDIS_EXPIRY_DAYS",
-      "ENCRYPTION_KEY"
+      "ENCRYPTION_KEY",
+      "SMTP_HOST",
+      "SMTP_PORT",
+      "SMTP_USERNAME",
+      "SMTP_PASSWORD",
+      "SMTP_FROM_EMAIL"
   ]
 
   @staticmethod

@@ -1,7 +1,11 @@
 from .auth import (
-  LoginRequestSchema,
+  AccessRequestCodeSchema,
   LoginResponseSchema,
   LoginStaffResponseSchema,
+  JWTAccessTokenPayloadResponseSchema,
+  LoginRequestSchema,
+  ChangePasswordRequestSchema,
+  ForgotPasswordRequestSchema
 )
 from .clinical_encounter import (
   ClinicalEncounterCreateRequestSchema,
@@ -92,11 +96,15 @@ __all__ = [
     "LaboratoryStaffResponse",
     "FileAttachmentSchema",
     "MedicationDispensingSchema",
-    "LoginRequestSchema",
+    "AccessRequestCodeSchema",
     "LoginResponseSchema",
     "LoginStaffResponseSchema",
     "EncounterSummarySchema",
     "PatientInfoSchema",
     "HealthHistorySummarySchema",
-    "PatientSearchResponseSchema"
+    "PatientSearchResponseSchema",
+    "JWTAccessTokenPayloadResponseSchema",
+    "LoginRequestSchema",
+    "ChangePasswordRequestSchema",
+    "ForgotPasswordRequestSchema"
 ]

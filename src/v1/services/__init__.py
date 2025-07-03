@@ -12,6 +12,7 @@ from .health_history import HealthHistorySummarizationService
 from .laboratory_order import LaboratoryOrderService
 from .patient import PatientService
 from .staff import StaffService
+from .general.email import EmailService
 
 __all__ = [
     "AppService",
@@ -29,5 +30,6 @@ __all__ = [
     "ClinicalNoteService",
     "ClinicalOrderService",
     "LaboratoryOrderService",
-    "HealthHistorySummarizationService"
+    "HealthHistorySummarizationService",
+    "EmailService"
 ]

@@ -1,5 +1,6 @@
 
 import datetime
+import string
 import uuid
 from uuid import UUID
 
@@ -16,6 +17,8 @@ from v1.schemas import (
   StaffResponseSchema,
   StaffUpdateRequestSchema,
 )
+from v1.services.general.email import EmailService
+import random
 from v1.type_defs import (
   APIResponse,
   CreateDataResponse,
@@ -31,8 +34,9 @@ class StaffService:
   def create(self, data: StaffCreateRequestSchema,
              db: Session) -> APIResponse[CreateDataResponse]:
     try:
+      random_password = self._generate_password_()
       hashed_password = bcrypt.hashpw(
-          data.surname.lower().encode("utf-8"),
+          random_password.encode("utf-8"),
           bcrypt.gensalt()).decode("utf-8")
 
       staff_data = data.model_dump(exclude={"departments"})
@@ -40,6 +44,11 @@ class StaffService:
 
       departments_data: List[Dict[str, uuid.UUID]] = [
           dpt.model_dump() for dpt in data.departments]
+      
+      email_service = EmailService()
+      html_template = email_service.load_html_template("src/v1/templates/account_password.html")
+      html = html_template.format(name=f"{staff_data['title']} {staff_data['surname']}", password=random_password)
+      email_service.send_html_email(staff_data["email"], "Welcome to HealthSyncIQ", html);
 
       staff = StaffModel(**staff_data)
       db.add(staff)
@@ -58,11 +67,11 @@ class StaffService:
       db.commit()
 
       db.refresh(staff)
-
+      
       return {
           "data": {
               "id": staff.id,
-              "message": f"Staff {staff.title} {staff.surname} {staff.first_name} created successfully"
+              "message": f"Staff {staff.title} {staff.surname} {staff.first_name} created successfully Check email for your password"
           }
       }
 
@@ -247,3 +256,25 @@ class StaffService:
 
     except Exception as exc:
       raise AppException.classify_error(exc)
+    
+  def _generate_password_(self, length: int = 8) -> str:
+    symbols = "!@#$%&*"
+
+    required = [
+        random.choice(string.ascii_uppercase),
+        random.choice(string.ascii_lowercase),
+        random.choice(string.digits),
+        random.choice(symbols)
+    ]
+
+    safe_chars = (
+        string.ascii_uppercase +
+        string.ascii_lowercase +
+        string.digits +
+        symbols
+    )
+
+    remaining = random.choices(safe_chars, k=length - len(required))
+    all_chars = required + remaining
+    random.shuffle(all_chars)
+    return ''.join(all_chars)
