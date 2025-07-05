@@ -1,5 +1,9 @@
 from .auth import StaffRole
-from .jwt import JWTTokenPayload, JWTAccessTokenPayload, JWTAccessTokenPayloadResponse
+from .jwt import (
+  JWTAccessTokenPayload,
+  JWTAccessTokenPayloadResponse,
+  JWTTokenPayload,
+)
 from .kwargs import UvicornKwargs
 from .response import (
   APIResponse,

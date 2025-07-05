@@ -8,7 +8,12 @@ from typing_extensions import Any, Dict, Optional, cast
 
 from settings import Config
 from v1.errors import AppException
-from v1.type_defs import ErrorTypeEnum, JWTTokenPayload, JWTAccessTokenPayload, JWTAccessTokenPayloadResponse
+from v1.type_defs import (
+  ErrorTypeEnum,
+  JWTAccessTokenPayload,
+  JWTAccessTokenPayloadResponse,
+  JWTTokenPayload,
+)
 
 _jwt_service_instance: Optional["JWTService"] = None
 
@@ -39,16 +44,16 @@ class JWTService:
 
     except Exception as exc:
       raise AppException.classify_error(error=exc)
-    
+
   def create_access_token(self, id: UUID) -> JWTAccessTokenPayloadResponse:
     try:
       code = self._generate_access_code_()
-      
+
       payload = JWTAccessTokenPayload(
           id=str(id),
           code=code,
           exp=datetime.datetime.now(
-          datetime.timezone.utc) + datetime.timedelta(minutes=10)
+              datetime.timezone.utc) + datetime.timedelta(minutes=10)
       )
 
       encoded_jwt = jwt.encode(
@@ -56,13 +61,13 @@ class JWTService:
           self.secret_key,
           algorithm=self.algorithm
       )
-      
+
       token = encoded_jwt if isinstance(
           encoded_jwt, str) else encoded_jwt.decode("utf-8")
-      
+
       return JWTAccessTokenPayloadResponse(
-        code=code,
-        token=token
+          code=code,
+          token=token
       )
 
     except Exception as exc:
@@ -92,7 +97,7 @@ class JWTService:
 
     except Exception as exc:
       raise AppException.classify_error(error=exc)
-    
+
   def decode_access_token(self, token: str) -> JWTAccessTokenPayload:
     try:
       payload = jwt.decode(
@@ -117,7 +122,7 @@ class JWTService:
 
     except Exception as exc:
       raise AppException.classify_error(error=exc)
-    
+
   def _generate_access_code_(self, length: int = 8) -> str:
     symbols = "!@#$%&*"
 

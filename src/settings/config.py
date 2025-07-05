@@ -33,7 +33,7 @@ class Config:
   SECONDS_IN_A_DAY: int = 86400
 
   ENCRYPTION_KEY: str = cast(str, os.getenv("ENCRYPTION_KEY"))
-  
+
   SMTP_HOST: str = cast(str, os.getenv("SMTP_HOST"))
   SMTP_PORT: int = int(os.getenv("SMTP_PORT", 465))
   SMTP_USERNAME: str = cast(str, os.getenv("SMTP_USERNAME"))

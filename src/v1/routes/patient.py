@@ -5,10 +5,7 @@ from typing_extensions import List
 from v1.controllers import PatientController
 from v1.docs import get_responses
 from v1.middlewares import Authenticate
-from v1.schemas import (
-    PatientResponseSchema,
-    PatientSearchResponseSchema
-)
+from v1.schemas import PatientResponseSchema, PatientSearchResponseSchema
 from v1.type_defs import (
   APIResponse,
   BaseResponse,
@@ -92,7 +89,7 @@ class PatientRoute:
         responses=get_responses(200, 401, 404, 500),
         response_model=BaseResponse[str]
     )
-    
+
     self.router.add_api_route(
         path="/patients/{registration_code}/search-by-registration-code",
         endpoint=self.controller.search_by_registration_code,
