@@ -42,7 +42,7 @@ class EmailService:
         server.login(self.username, self.password)
         server.send_message(msg)
       return True
-    except Exception as e:
+    except Exception:
       return False
 
   def load_html_template(self, file_path: str) -> str:

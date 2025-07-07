@@ -59,7 +59,7 @@ class PatientService:
       return {
           "data": {
               "id": patient.id,
-              "message": f"Patient {self.encryption_service.decrypt(patient.first_name)} {self.encryption_service.decrypt(patient.last_name)} created successfully"
+              "message": patient.registration_code
           }
       }
 

@@ -64,12 +64,13 @@ class AuthService:
       html = html_template.format(
           name=f"{staff.title} {staff.surname}",
           code=payload["code"])
-      
-      isEmailSent = email_service.send_html_email(staff.email, "Login Access Code", html)
+
+      isEmailSent = email_service.send_html_email(
+          staff.email, "Login Access Code", html)
       if not isEmailSent:
         raise AppException(
             type=ErrorTypeEnum.INTERNAL_SERVER_ERROR,
-            detail="Network to send email is unreachable"
+            detail="Network error during login. Please check your network connection."
         )
 
       return {
@@ -85,13 +86,13 @@ class AuthService:
       jwt_service = jwt_service_instance()
       payload: JWTAccessTokenPayload = jwt_service.decode_access_token(
           login_data.token)
-      
+
       if (payload["code"] != login_data.code):
         raise AppException(
             type=ErrorTypeEnum.UNAUTHORIZED,
-            detail="Invalid/expired authentication code"
+            detail="Invalid/expired authentication code. Please try logging in again."
         )
-      print(payload["id"])
+
       staff = db.query(StaffModel).filter(
           StaffModel.id == payload["id"],
           StaffModel.deleted_at.is_(None),

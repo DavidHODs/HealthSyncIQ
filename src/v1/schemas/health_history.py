@@ -9,7 +9,7 @@ class PatientInfoSchema(BaseModel):
   gender: Optional[str]
   genotype: Optional[str]
   blood_group: Optional[str]
-  meta: Optional[Dict[str, Any]] = {}
+  meta: Optional[List[Dict[str, str]]] = []
 
 
 class EncounterSummarySchema(BaseModel):
@@ -33,23 +33,21 @@ class HealthHistorySummarySchema(BaseModel):
                 "gender": "Male",
                 "genotype": "AA",
                 "blood_group": "O+",
-                "allergies": ["Penicillin", "Peanuts"],
-                "chronic_conditions": ["Diabetes", "Hypertension"]
+                "meta": [
+                    {"allergy": "Penicillin"},
+                    {"allergy": "Peanuts"},
+                    {"chronic_condition": "Diabetes"},
+                    {"chronic_condition": "Hypertension"}
+                ]
             },
             "encounter_summaries": [
                 {
-                    "date": "2025-05-17",
+                    "date": "2025-05-17T00:00:00",
                     "type": "Consultation",
                     "doctor": "Dr. Jane Smith",
                     "complaint": "Fever and cough",
                     "diagnosis": "Acute bronchitis",
-                    "labs": {
-                        "CBC": {
-                            "hemoglobin": "14.2 g/dL",
-                            "wbc": "8.5 x10^9/L",
-                            "notes": "Routine check-up"
-                        }
-                    }
+                    "labs": []
                 }
             ]
         }
