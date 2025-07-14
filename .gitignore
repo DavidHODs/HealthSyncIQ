@@ -1,5 +1,4 @@
 .env
-README.md
 example.env
 __pycache__
 .mypy_cache
