@@ -1,8 +1,8 @@
 from contextlib import asynccontextmanager
-from fastapi.middleware.cors import CORSMiddleware
 
 import uvicorn
 from fastapi import FastAPI, Security
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer
 from psycopg import OperationalError
 from sqlalchemy import text
@@ -58,11 +58,11 @@ app: FastAPI = FastAPI(
     version="1.0.0")
 
 app.add_middleware(
-  CORSMiddleware,
-  allow_origins=["*"],
-  allow_credentials=True,
-  allow_methods=["*"], 
-  allow_headers=["*"], 
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 for router, tags in all_routes:

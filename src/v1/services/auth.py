@@ -1,34 +1,36 @@
 
 import random
+import re
 import string
+
 import bcrypt
 from sqlalchemy.orm import Session
 
 from v1.errors import AppException
 from v1.models import StaffModel
 from v1.schemas import (
+  AccessRequestCodeSchema,
+  ChangePasswordRequestSchema,
+  ForgotPasswordRequestSchema,
+  JWTAccessTokenPayloadResponseSchema,
   LoginRequestSchema,
   LoginResponseSchema,
   LoginStaffResponseSchema,
-  JWTAccessTokenPayloadResponseSchema,
-  AccessRequestCodeSchema,
-  ChangePasswordRequestSchema,
-  ForgotPasswordRequestSchema
 )
 from v1.services.general.email import EmailService
 from v1.type_defs import APIResponse, ErrorTypeEnum, JWTAccessTokenPayload
 
 from .general.jwt import jwt_service_instance
 from .general.redis import redis_service_instance
-import re
 
 
 class AuthService:
   def __init__(self) -> None:
     self.jwt_service = jwt_service_instance()
     self.redis_service = redis_service_instance()
-    
-  def get_access_token(self, access_code_data: AccessRequestCodeSchema, db: Session) -> APIResponse[JWTAccessTokenPayloadResponseSchema]:
+
+  def get_access_token(self, access_code_data: AccessRequestCodeSchema,
+                       db: Session) -> APIResponse[JWTAccessTokenPayloadResponseSchema]:
     try:
       staff = db.query(StaffModel).filter(
           StaffModel.email == access_code_data.email,
@@ -51,15 +53,25 @@ class AuthService:
       payload = self.jwt_service.create_access_token(staff.id)
 
       access_response = JWTAccessTokenPayloadResponseSchema(
-        id=staff.id,
-        token=payload["token"],
-        msg="Check your email for access code"
+          id=staff.id,
+          token=payload["token"],
+          msg="Check your email for access code"
       )
-      
+
       email_service = EmailService()
-      html_template = email_service.load_html_template("src/v1/templates/login_access_code.html")
-      html = html_template.format(name=f"{staff.title} {staff.surname}", code=payload["code"])
-      email_service.send_html_email(staff.email, "Login Access Code", html);
+      html_template = email_service.load_html_template(
+          "src/v1/templates/login_access_code.html")
+      html = html_template.format(
+          name=f"{staff.title} {staff.surname}",
+          code=payload["code"])
+
+      isEmailSent = email_service.send_html_email(
+          staff.email, "Login Access Code", html)
+      if not isEmailSent:
+        raise AppException(
+            type=ErrorTypeEnum.INTERNAL_SERVER_ERROR,
+            detail="Network error during login. Please check your network connection."
+        )
 
       return {
           "data": access_response
@@ -68,17 +80,19 @@ class AuthService:
     except Exception as exc:
       raise AppException.classify_error(exc)
 
-  def login(self, login_data: LoginRequestSchema, db: Session) -> APIResponse[LoginResponseSchema]:
+  def login(self, login_data: LoginRequestSchema,
+            db: Session) -> APIResponse[LoginResponseSchema]:
     try:
-      jwt_service = jwt_service_instance();
-      payload: JWTAccessTokenPayload = jwt_service.decode_access_token(login_data.token)
-      
+      jwt_service = jwt_service_instance()
+      payload: JWTAccessTokenPayload = jwt_service.decode_access_token(
+          login_data.token)
+
       if (payload["code"] != login_data.code):
         raise AppException(
             type=ErrorTypeEnum.UNAUTHORIZED,
-            detail="Invalid/expired authentication code"
+            detail="Invalid/expired authentication code. Please try logging in again."
         )
-      
+
       staff = db.query(StaffModel).filter(
           StaffModel.id == payload["id"],
           StaffModel.deleted_at.is_(None),
@@ -117,7 +131,8 @@ class AuthService:
     except Exception as exc:
       raise AppException.classify_error(exc)
 
-  def change_password(self, change_password_data: ChangePasswordRequestSchema, db: Session) -> APIResponse[str]:
+  def change_password(self, change_password_data: ChangePasswordRequestSchema,
+                      db: Session) -> APIResponse[str]:
     try:
       staff = db.query(StaffModel).filter(
           StaffModel.email == change_password_data.email,
@@ -126,34 +141,35 @@ class AuthService:
       ).first()
 
       if not staff:
-          raise AppException(
-              type=ErrorTypeEnum.UNAUTHORIZED,
-              detail="Invalid email or password"
-          )
+        raise AppException(
+            type=ErrorTypeEnum.UNAUTHORIZED,
+            detail="Invalid email or password"
+        )
 
-      if not self._verify_password_(change_password_data.old_password, staff.password):
-          raise AppException(
-              type=ErrorTypeEnum.UNAUTHORIZED,
-              detail="Invalid email or password"
-          )
+      if not self._verify_password_(
+              change_password_data.old_password, staff.password):
+        raise AppException(
+            type=ErrorTypeEnum.UNAUTHORIZED,
+            detail="Invalid email or password"
+        )
 
       if change_password_data.new_password != change_password_data.confirm_password:
         raise AppException(
-          type=ErrorTypeEnum.VALIDATION_ERROR,
-          detail="New password and confirmation do not match"
+            type=ErrorTypeEnum.VALIDATION_ERROR,
+            detail="New password and confirmation do not match"
         )
 
       password = change_password_data.new_password
       if (
-        len(password) < 8 or
-        not re.search(r"[A-Z]", password) or
-        not re.search(r"[a-z]", password) or
-        not re.search(r"\d", password) or
-        not re.search(r"[!@#$%&*]", password)
+          len(password) < 8 or
+          not re.search(r"[A-Z]", password) or
+          not re.search(r"[a-z]", password) or
+          not re.search(r"\d", password) or
+          not re.search(r"[!@#$%&*]", password)
       ):
         raise AppException(
-          type=ErrorTypeEnum.VALIDATION_ERROR,
-          detail="Password must be at least 8 characters and include uppercase, lowercase, digit, and symbol (!@#$%&*)"
+            type=ErrorTypeEnum.VALIDATION_ERROR,
+            detail="Password must be at least 8 characters and include uppercase, lowercase, digit, and symbol (!@#$%&*)"
         )
 
       hashed_password = bcrypt.hashpw(
@@ -171,31 +187,34 @@ class AuthService:
     except Exception as exc:
       db.rollback()
       raise AppException.classify_error(exc)
-    
+
   def forgot_password(self, forgot_password_data: ForgotPasswordRequestSchema,
-             db: Session) -> APIResponse[str]:
+                      db: Session) -> APIResponse[str]:
     try:
       staff = db.query(StaffModel).filter(
           StaffModel.email == forgot_password_data.email,
           StaffModel.deleted_at.is_(None),
           StaffModel.is_active == True
       ).first()
-      
+
       if not staff:
-          raise AppException(
-              type=ErrorTypeEnum.UNAUTHORIZED,
-              detail="Invalid email"
-          )
-      
+        raise AppException(
+            type=ErrorTypeEnum.UNAUTHORIZED,
+            detail="Invalid email"
+        )
+
       random_password = self._generate_password_()
       hashed_password = bcrypt.hashpw(
           random_password.encode("utf-8"),
           bcrypt.gensalt()).decode("utf-8")
-      
+
       email_service = EmailService()
-      html_template = email_service.load_html_template("src/v1/templates/password_reset.html")
-      html = html_template.format(name=f"{staff.title} {staff.surname}", password=random_password)
-      email_service.send_html_email(staff.email, "Password Reset", html);
+      html_template = email_service.load_html_template(
+          "src/v1/templates/password_reset.html")
+      html = html_template.format(
+          name=f"{staff.title} {staff.surname}",
+          password=random_password)
+      email_service.send_html_email(staff.email, "Password Reset", html)
 
       staff.password = hashed_password
       db.commit()
@@ -207,12 +226,13 @@ class AuthService:
     except Exception as exc:
       raise AppException.classify_error(exc)
 
-  def _verify_password_(self, plain_password: str, hashed_password: str) -> bool:
+  def _verify_password_(self, plain_password: str,
+                        hashed_password: str) -> bool:
     plain_password_bytes: bytes = plain_password.encode("utf-8")
     hashed_password_bytes: bytes = hashed_password.encode("utf-8")
 
     return bcrypt.checkpw(plain_password_bytes, hashed_password_bytes)
-  
+
   def _generate_password_(self, length: int = 8) -> str:
     symbols = "!@#$%&*"
 

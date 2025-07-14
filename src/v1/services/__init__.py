@@ -5,6 +5,7 @@ from .clinical_note import ClinicalNoteService
 from .clinical_order import ClinicalOrderService
 from .department import DepartmentService
 from .diagnosis import DiagnosisService
+from .general.email import EmailService
 from .general.encryption import EncryptionService
 from .general.jwt import JWTService, jwt_service_instance
 from .general.redis import RedisService, redis_service_instance
@@ -12,7 +13,6 @@ from .health_history import HealthHistorySummarizationService
 from .laboratory_order import LaboratoryOrderService
 from .patient import PatientService
 from .staff import StaffService
-from .general.email import EmailService
 
 __all__ = [
     "AppService",

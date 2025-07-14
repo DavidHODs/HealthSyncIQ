@@ -4,8 +4,8 @@ from v1.controllers import AuthController
 from v1.docs import get_responses
 from v1.middlewares import Authenticate
 from v1.schemas import (
-  LoginResponseSchema, 
   JWTAccessTokenPayloadResponseSchema,
+  LoginResponseSchema,
 )
 from v1.type_defs import BaseResponse, StaffRole
 
@@ -15,7 +15,7 @@ class AuthRoute:
     self.router = APIRouter()
     self.controller = AuthController()
     self._register_routes()
-  
+
   def _register_routes(self) -> None:
     self.router.add_api_route(
         path="/auth/get-access-token",
@@ -34,7 +34,7 @@ class AuthRoute:
         responses=get_responses(200, 401, 500),
         response_model=BaseResponse[LoginResponseSchema]
     )
-    
+
     self.router.add_api_route(
         path="/auth/change-password",
         endpoint=self.controller.change_password,
@@ -43,7 +43,7 @@ class AuthRoute:
         responses=get_responses(200, 401, 500),
         response_model=BaseResponse[str]
     )
-    
+
     self.router.add_api_route(
         path="/auth/forgot-password",
         endpoint=self.controller.forgot_password,

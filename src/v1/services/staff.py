@@ -1,5 +1,6 @@
 
 import datetime
+import random
 import string
 import uuid
 from uuid import UUID
@@ -18,7 +19,6 @@ from v1.schemas import (
   StaffUpdateRequestSchema,
 )
 from v1.services.general.email import EmailService
-import random
 from v1.type_defs import (
   APIResponse,
   CreateDataResponse,
@@ -44,11 +44,15 @@ class StaffService:
 
       departments_data: List[Dict[str, uuid.UUID]] = [
           dpt.model_dump() for dpt in data.departments]
-      
+
       email_service = EmailService()
-      html_template = email_service.load_html_template("src/v1/templates/account_password.html")
-      html = html_template.format(name=f"{staff_data['title']} {staff_data['surname']}", password=random_password)
-      email_service.send_html_email(staff_data["email"], "Welcome to HealthSyncIQ", html);
+      html_template = email_service.load_html_template(
+          "src/v1/templates/account_password.html")
+      html = html_template.format(
+          name=f"{staff_data['title']} {staff_data['surname']}",
+          password=random_password)
+      email_service.send_html_email(
+          staff_data["email"], "Welcome to HealthSyncIQ", html)
 
       staff = StaffModel(**staff_data)
       db.add(staff)
@@ -67,7 +71,7 @@ class StaffService:
       db.commit()
 
       db.refresh(staff)
-      
+
       return {
           "data": {
               "id": staff.id,
@@ -256,7 +260,7 @@ class StaffService:
 
     except Exception as exc:
       raise AppException.classify_error(exc)
-    
+
   def _generate_password_(self, length: int = 8) -> str:
     symbols = "!@#$%&*"
 

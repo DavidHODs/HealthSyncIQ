@@ -27,7 +27,7 @@ class Authenticate:
 
       if payload.get("role") not in {role.value for role in self.roles}:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Insufficient permission for this operation"
         )
 
